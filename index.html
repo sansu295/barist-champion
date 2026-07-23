@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barista Certification Quiz - 250+ Master Bank</title>
+  <title>Costa Coffee Barista Certification Quiz</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -28,13 +28,7 @@
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
   </style>
 </head>
 <body class="bg-costa-cream min-h-screen text-slate-800 flex flex-col">
@@ -48,7 +42,7 @@
         </div>
         <div>
           <h1 class="font-extrabold text-lg md:text-xl tracking-tight">COSTA BARISTA CERTIFICATION</h1>
-          <p class="text-xs text-costa-gold font-medium">255 Question Master Question Bank</p>
+          <p class="text-xs text-costa-gold font-medium" id="bankTitle">Master Question Bank</p>
         </div>
       </div>
       <div id="userBadge" class="hidden flex items-center space-x-3 bg-costa-dark/60 px-3 py-1.5 rounded-full border border-costa-gold/30">
@@ -63,46 +57,43 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 my-4">
 
-    <!-- VIEW 1: USER LOGIN / REGISTER -->
+    <!-- VIEW 1: USER LOGIN -->
     <div id="loginView" class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-amber-100">
       <div class="text-center mb-6">
         <div class="w-16 h-16 bg-costa-burgundy text-costa-gold rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
           <i data-lucide="award" class="w-8 h-8"></i>
         </div>
         <h2 class="text-2xl font-bold text-costa-burgundy">Barista Login</h2>
-        <p class="text-sm text-slate-500 mt-1">Enter your details to take a 20-question quiz drawn from our complete 255-question master bank.</p>
+        <p class="text-sm text-slate-500 mt-1">Enter your details to take a 20-question randomized test.</p>
       </div>
 
-      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+      <div class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
           <div class="relative">
             <i data-lucide="user" class="w-5 h-5 absolute left-3 top-3 text-slate-400"></i>
-            <input type="text" id="usernameInput" required placeholder="e.g. Alex Morgan" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-costa-burgundy focus:outline-none" />
+            <input type="text" id="usernameInput" placeholder="e.g. Alex Morgan" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-costa-burgundy focus:outline-none" />
           </div>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Store / Employee ID</label>
           <div class="relative">
             <i data-lucide="building-2" class="w-5 h-5 absolute left-3 top-3 text-slate-400"></i>
-            <input type="text" id="storeInput" required placeholder="e.g. DXB-042" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-costa-burgundy focus:outline-none" />
+            <input type="text" id="storeInput" placeholder="e.g. DXB-042" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-costa-burgundy focus:outline-none" />
           </div>
         </div>
-        <button type="submit" class="w-full bg-costa-burgundy hover:bg-costa-dark text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition flex items-center justify-center space-x-2">
+        <button type="button" onclick="handleLogin()" class="w-full bg-costa-burgundy hover:bg-costa-dark text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
           <span>Start Assessment</span>
           <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
-      </form>
+      </div>
 
-      <!-- Mini Leaderboard Preview -->
       <div class="mt-8 pt-6 border-t border-slate-100">
         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
           <span>Top Barista Leaderboard</span>
           <i data-lucide="trophy" class="w-4 h-4 text-costa-gold"></i>
         </h3>
-        <div id="miniLeaderboard" class="space-y-2 text-sm">
-          <!-- Populated by JS -->
-        </div>
+        <div id="miniLeaderboard" class="space-y-2 text-sm"></div>
       </div>
     </div>
 
@@ -112,7 +103,7 @@
         <div>
           <span class="text-xs font-bold text-costa-gold uppercase tracking-wider">Welcome back</span>
           <h2 class="text-2xl font-extrabold text-costa-burgundy" id="welcomeUser">Barista Name</h2>
-          <p class="text-sm text-slate-500">Each test draws <span class="font-bold text-slate-700">20 unique questions</span> randomly from our 255-item Costa Standards Bank.</p>
+          <p class="text-sm text-slate-500">Each quiz draws <span class="font-bold text-slate-700">20 unique questions</span> randomly from our complete master bank.</p>
         </div>
         <button onclick="startNewQuiz()" class="w-full md:w-auto bg-costa-burgundy hover:bg-costa-dark text-white font-bold px-6 py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
           <i data-lucide="play-circle" class="w-5 h-5"></i>
@@ -141,11 +132,11 @@
         </div>
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4">
           <div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
-            <i data-lucide="database" class="w-6 h-6"></i>
+            <i data-lucide="help-circle" class="w-6 h-6"></i>
           </div>
           <div>
             <p class="text-xs font-semibold text-slate-400">Question Pool</p>
-            <p class="text-xl font-bold text-slate-800">255 Items</p>
+            <p class="text-xl font-bold text-slate-800" id="statPoolSize">0 Items</p>
           </div>
         </div>
       </div>
@@ -172,9 +163,7 @@
                 <th class="py-3 px-2 text-right">Date</th>
               </tr>
             </thead>
-            <tbody id="fullLeaderboardTable" class="divide-y divide-slate-100 text-sm">
-              <!-- Populated by JS -->
-            </tbody>
+            <tbody id="fullLeaderboardTable" class="divide-y divide-slate-100 text-sm"></tbody>
           </table>
         </div>
       </div>
@@ -182,7 +171,6 @@
 
     <!-- VIEW 3: ACTIVE QUIZ VIEW -->
     <div id="quizView" class="hidden space-y-6">
-      <!-- Quiz Header / Progress -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <span class="text-xs font-bold text-costa-gold uppercase tracking-wider">Active Certification Quiz</span>
@@ -193,15 +181,9 @@
         </div>
       </div>
 
-      <!-- Question Card -->
       <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border border-slate-100 relative">
-        <h3 id="questionText" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
-          <!-- Question text inserted here -->
-        </h3>
-
-        <div id="optionsContainer" class="space-y-3">
-          <!-- 4 Multiple Choice Options inserted here -->
-        </div>
+        <h3 id="questionText" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed"></h3>
+        <div id="optionsContainer" class="space-y-3"></div>
 
         <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
           <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition flex items-center gap-1.5">
@@ -222,9 +204,7 @@
     <!-- VIEW 4: QUIZ RESULT SUMMARY -->
     <div id="resultView" class="hidden space-y-6">
       <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 text-center border border-slate-100">
-        <div id="scoreBadge" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-extrabold shadow-lg">
-          <!-- Icon / percentage -->
-        </div>
+        <div id="scoreBadge" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-extrabold shadow-lg"></div>
         <h2 class="text-2xl md:text-3xl font-extrabold text-costa-burgundy" id="resultTitle">Assessment Completed</h2>
         <p class="text-sm text-slate-500 mt-1" id="resultSubtitle">Here is your detailed breakdown for this 20-question test.</p>
 
@@ -250,133 +230,635 @@
         </div>
       </div>
 
-      <!-- Detailed Review -->
       <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <i data-lucide="file-check-2" class="w-5 h-5 text-costa-gold"></i>
-          <span>Answers & Corrections Review</span>
-        </h3>
-        <div id="reviewContainer" class="space-y-4">
-          <!-- Inserted by JS -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="file-check-2" class="w-5 h-5 text-costa-gold"></i>
+              <span>Answer Corrections & Review</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Filter questions below to focus on your incorrect answers.</p>
+          </div>
+          <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold">
+            <button id="filterAllBtn" onclick="setReviewFilter('all')" class="px-3 py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition">All (20)</button>
+            <button id="filterWrongBtn" onclick="setReviewFilter('wrong')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition">Incorrect Only</button>
+            <button id="filterCorrectBtn" onclick="setReviewFilter('correct')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition">Correct Only</button>
+          </div>
         </div>
+        <div id="reviewContainer" class="space-y-4"></div>
       </div>
     </div>
 
   </main>
 
   <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
-    <p>© 2026 Coffee UAE — Official Brand Excellence & Calibration Assessment Tool (255 Items)</p>
+    <p>© 2026 Costa Coffee UAE — Official Brand Excellence & Calibration Assessment Tool</p>
   </footer>
 
-  <!-- SCRIPT & QUESTION BANK -->
   <script>
-    // ------------------------------------------------------------------
-    // 255 COMPLETE QUESTIONS BANK (EXPANDED MASTER QUESTION BANK)
-    // ------------------------------------------------------------------
+    // FULL MASTER QUESTION BANK (OVER 250 QUESTIONS EXTRACTED FROM YOUR JSON DATA)
     const MASTER_QUESTIONS = [
-      // Section 1: Base Espresso & Ristretto (1-30)
-      { q: "What are the correct specifications for a Standard Single Espresso?", o: ["1 Shot, 20mls / 20g – 15 Seconds", "1 Shot, 30mls / 30g – 20 Seconds", "2 Shots, 60mls / 60g – 20 Seconds", "1 Shot, 30mls / 30g – 15 Seconds"], a: 1 },
-      { q: "What are the specifications for a Decaf Single Espresso?", o: ["1 Pod, 1 Shot, 20mls / 20g – 15 Seconds", "1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "2 Pods, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 2 Shots, 60mls / 60g – 20 Seconds"], a: 1 },
-      { q: "What is the liquid volume and output weight of a Standard Double Espresso?", o: ["40mls / 40g", "30mls / 30g", "60mls / 60g", "80mls / 80g"], a: 2 },
-      { q: "How many shots and what extraction time are required for a Standard Double Espresso?", o: ["2 Shots – 15 Seconds", "2 Shots – 20 Seconds", "1 Shot – 20 Seconds", "2 Shots – 35 Seconds"], a: 1 },
-      { q: "How many decaf pods are required for a Decaf Double Espresso?", o: ["2 Pods", "1 Pod", "3 Pods", "None"], a: 1 },
-      { q: "What is the extraction time for a Standard Single Ristretto?", o: ["20 Seconds", "5 Seconds", "15 Seconds", "35 Seconds"], a: 2 },
-      { q: "What are the shot count and liquid measurement for a Standard Single Ristretto?", o: ["1 Shot, 30mls / 30g", "1 Shot, 20mls / 20g", "2 Shots, 40mls / 40g", "1 Shot, 10mls / 10g"], a: 1 },
-      { q: "What are the complete specifications for a Decaf Single Ristretto?", o: ["1 Pod, 1 Shot, 20mls / 20g – 15 Seconds", "1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 2 Shots, 40mls / 40g – 15 Seconds", "2 Pods, 1 Shot, 20mls / 20g – 15 Seconds"], a: 0 },
-      { q: "What are the specifications for a Standard Double Ristretto?", o: ["2 Shots, 60mls / 60g – 20 Seconds", "2 Shots, 40mls / 40g – 15 Seconds", "2 Shots, 30mls / 30g – 15 Seconds", "1 Shot, 40mls / 40g – 15 Seconds"], a: 1 },
-      { q: "What are the specifications for a Decaf Double Ristretto?", o: ["2 Pods, 2 Shots, 40mls / 40g – 15 Seconds", "1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 2 Shots, 40mls / 40g – 15 Seconds", "1 Pod, 1 Shot, 20mls / 20g – 15 Seconds"], a: 2 },
-      { q: "What is the difference in extraction time between a Single Espresso and a Single Ristretto?", o: ["Single Espresso is 15s; Single Ristretto is 20s", "Single Espresso is 20s; Single Ristretto is 15s", "Both are 20s", "Both are 15s"], a: 1 },
-      { q: "What is the difference in volume between a Double Espresso and a Double Ristretto?", o: ["Double Espresso is 60mls; Double Ristretto is 40mls", "Double Espresso is 40mls; Double Ristretto is 60mls", "Double Espresso is 80mls; Double Ristretto is 60mls", "Both are 60mls"], a: 0 },
-      { q: "How many decaf pods are used for a Decaf Single Espresso vs. a Decaf Double Espresso?", o: ["Single uses 1 Pod; Double uses 2 Pods", "Single uses 2 Pods; Double uses 1 Pod", "Both use 1 Pod", "Both use 2 Pods"], a: 2 },
-      { q: "What is the output weight of a Standard Single Espresso?", o: ["20g", "30g", "40g", "60g"], a: 1 },
-      { q: "What is the output volume of a Standard Double Ristretto?", o: ["20mls", "30mls", "40mls", "60mls"], a: 2 },
-      { q: "Does the extraction time change between Standard Single Espresso and Decaf Single Espresso?", o: ["Yes, Decaf takes 15 seconds", "Yes, Decaf takes 25 seconds", "No, both take 20 Seconds", "No, both take 15 Seconds"], a: 2 },
-      { q: "Does the extraction time change between Standard Double Ristretto and Decaf Double Ristretto?", o: ["Yes, Decaf takes 20 seconds", "No, both take 15 Seconds", "No, both take 20 Seconds", "Yes, Standard takes 20 seconds"], a: 1 },
-      { q: "What is the shot count for a Standard Single Ristretto?", o: ["1 Shot", "2 Shots", "3 Shots", "Half Shot"], a: 0 },
-      { q: "What is the weight output for a Decaf Double Espresso?", o: ["30g", "40g", "60g", "90g"], a: 2 },
-      { q: "What is the shot count for a Standard Double Espresso?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 1 },
-      { q: "What visual indicator signifies a well-extracted standard Costa espresso shot?", o: ["Thin white foam with large bubbles", "Golden-hazelnut crema with reddish-brown tiger stripes", "Dark black surface with no crema", "Pale yellow top with high acidity"], a: 1 },
-      { q: "What is the ideal serving temperature range for espresso directly upon extraction?", o: ["60°C - 65°C", "85°C - 92°C", "45°C - 50°C", "75°C - 80°C"], a: 0 },
-      { q: "Why must portafilter group handles be kept locked into the group head between uses?", o: ["To prevent theft", "To maintain thermal stability and keep portafilters warm", "To lock the water pump", "To prevent coffee dust accumulation"], a: 1 },
-      { q: "What happens to espresso taste if extracted for only 8 seconds (under-extracted)?", o: ["It becomes overly bitter and dry", "It becomes sour, thin, and watery", "It becomes excessively sweet", "It turns creamy and heavy"], a: 1 },
-      { q: "What happens to espresso taste if extracted for 35 seconds (over-extracted)?", o: ["It becomes intensely sweet", "It becomes harsh, burnt, and astringent", "It loses all flavor", "It becomes sour"], a: 1 },
-      { q: "What is the correct tamping pressure applied to ground coffee in the portafilter?", o: ["5 kg", "15 - 20 kg (firm and level)", "35 kg", "No pressure, lightly touch"], a: 1 },
-      { q: "Why is purging the group head for 1-2 seconds before inserting the handle necessary?", o: ["To cool down the boiler", "To flush old coffee grounds and stabilize water temperature", "To increase water pressure", "To clean the drip tray"], a: 1 },
-      { q: "What is the maximum time an espresso shot can sit before being combined with milk or water?", o: ["15 seconds", "30 seconds", "2 minutes", "5 minutes"], a: 0 },
-      { q: "What is Costa's signature espresso blend known worldwide?", o: ["Mocha Italia", "Arabica Gold", "Dark Roast Special", "Classic Espresso Blend"], a: 0 },
-      { q: "What bean ratio composes the signature Costa Mocha Italia blend?", o: ["100% Arabica", "100% Robusta", "70% Arabica to 30% Robusta blend", "50% Arabica to 50% Robusta blend"], a: 2 },
+      { q: "How long is the shelf life of an opened bag of coffee (day dot)?", o: ["24 Hours", "48 Hours", "72 Hours", "1 Week"], a: 1 },
+      { q: "What is the maximum time coffee should sit in the hopper before being managed for waste (off peak/end of day)?", o: ["1 Hour", "2 Hours", "4 Hours", "8 Hours"], a: 2 },
+      { q: "What is the shelf life of coffee in the dosing chamber?", o: ["30 Minutes", "1 Hour", "2 Hours", "4 Hours"], a: 1 },
+      { q: "When using Costa decaf pods and 3 or 4 shots are required, how many pods should be used?", o: ["1 pod", "2 separate pods", "3 pods", "Decaf pods cannot make 3 or 4 shots"], a: 1 },
+      { q: "How long should the red group handle be warmed for if using decaf from cold?", o: ["3 seconds", "5 seconds", "10 seconds", "15 seconds"], a: 1 },
+      { q: "During the 4 Steps & Extraction process, what is Step 3 called?", o: ["Level", "Tamp", "Twist", "Wipe"], a: 2 },
+      { q: "Why must coffee be extracted as soon as it is inserted into the group head?", o: ["To save time", "Leaving it without extracting will burn the coffee", "It affects the crema colour only", "It is a health and safety requirement"], a: 1 },
+      { q: "As a minimum, when should espresso cups be rinsed with hot water?", o: ["Every hour", "After any busy trading periods", "Only at closing", "Every 30 minutes"], a: 1 },
+      { q: "In the Grind Check, how much coffee should be dispensed into the group handle?", o: ["10g", "14g", "18g", "21g"], a: 1 },
+      { q: "In the Grind Check, what weight of coffee in the espresso cup is the target after a 20 second extraction?", o: ["40g", "50g", "60g +/- 4g", "70g +/- 4g"], a: 2 },
+      { q: "During grinder adjustments in the Grind Check, one notch on the grinder is equivalent to approximately how much coffee?", o: ["5g", "10g", "14g", "20g"], a: 1 },
+      { q: "Turning the grinder blades clockwise/coarse produces what result?", o: ["Less coffee", "More coffee", "No change", "Stops the grinder"], a: 1 },
+      { q: "In the Dose Check, what is the target weight of coffee on the chamber lid (Coffee should be)?", o: ["10g +/- 0.4g", "14g +/- 0.4g", "18g +/- 0.4g", "20g +/- 0.4g"], a: 1 },
+      { q: "In the Dose Check, to increase the dose because it's too light, which direction should you turn?", o: ["Clockwise", "Anti-clockwise", "Either direction", "Do not adjust, replace the chamber"], a: 1 },
+      { q: "Approximately how much does one quarter turn of the dose adjustment nut change the dose on most grinders?", o: ["0.5g", "1g", "2g", "3g"], a: 1 },
+      { q: "On the Mini Mazzer, what is the target dose for a Triple Shot?", o: ["14g +/- 0.4g", "18g +/- 0.4g", "21g +/- 0.4g", "24g +/- 0.4g"], a: 2 },
+      { q: "On grind time adjustments, an approximate change of 1 second in grind time is equivalent to what dose change?", o: ["0.5g", "1g", "1.5g", "2g"], a: 2 },
+      { q: "In the Visual Grind Checks, 'too coarse' flow is described as:", o: ["A thin flow running very slow with dark crema", "A thick flow running fast and straight down with light brown crema", "A consistent medium flow, thicker at the handle", "No flow at all"], a: 1 },
+      { q: "In the Visual Grind Checks, 'too fine' flow is described as:", o: ["A thick flow running fast and straight down", "A consistent medium sized flow", "A thin flow running very slow or dripping, dark brown crema with inward trails", "A flow with no crema"], a: 2 },
+      { q: "Before opening, what must always be completed prior to an Espresso Check?", o: ["A visual check only", "A full Grind & Dose check", "A machine descale", "Nothing, it's the first check of the day"], a: 1 },
+      { q: "In the Espresso Check, at how many seconds should the extraction be stopped?", o: ["15 seconds", "20 seconds", "25 seconds", "30 seconds"], a: 1 },
+      { q: "In the Espresso Check, what is the target weight in the espresso cup?", o: ["30g", "45g", "60g", "80g"], a: 2 },
+      { q: "If the coffee is running too fast during Espresso Check adjustments, what should you do to the tamp pressure?", o: ["Make it lighter", "Make it harder", "No adjustment to tamp is needed", "Close the hopper permanently"], a: 1 },
+      { q: "As a minimum, how often must a steam arm cleaning cloth be replaced?", o: ["Every hour", "Every 3 hours", "Every 6 hours", "Once per shift"], a: 1 },
+      { q: "Cloths for the steam arm should be stored:", o: ["In your apron pocket", "In a metal pot only when not in use", "On the drip tray", "Draped over the machine"], a: 1 },
+      { q: "On a Vintage coffee machine, what is the target weight for a Double Shot button check?", o: ["30g", "60g", "80g", "10g"], a: 1 },
+      { q: "On a Vintage coffee machine, what is the target weight for a Triple Shot button check?", o: ["60g", "70g", "80g", "90g"], a: 2 },
+      { q: "On a Vintage coffee machine, what is the target weight for a Cortissimo Shot button check?", o: ["10g", "20g", "30g", "40g"], a: 2 },
+      { q: "On a Vintage coffee machine, what is the target weight for a Corto Shot button check?", o: ["10g", "20g", "30g", "60g"], a: 0 },
+      { q: "Before checking button calibrations on a Vintage machine, what must be completed first?", o: ["A machine descale", "A full and accurate Grind & Dose check", "A steam arm clean", "An allergen check"], a: 1 },
+      { q: "Per the Coffee Shots & Decaf Extraction Guide, a Single Espresso should be:", o: ["1 Shot, 30mls/30g – 20 Seconds", "2 Shots, 60mls/60g – 20 Seconds", "1 Shot, 20mls/20g – 15 Seconds", "1 Shot, 40mls/40g – 25 Seconds"], a: 0 },
+      { q: "Per the Coffee Shots & Decaf Extraction Guide, a Double Ristretto is:", o: ["2 Shots, 60mls/60g – 20 Seconds", "1 Shot, 20mls/20g – 15 Seconds", "2 Shots, 40mls/40g – 15 Seconds", "2 Shots, 40mls/40g – 20 Seconds"], a: 2 },
+      { q: "Per the Coffee Shots & Decaf Extraction Guide, a Medium Americano requires:", o: ["2 shots, 60mls/60g – 20 seconds", "3 shots, 80mls/80g – 35 seconds", "4 shots, 120mls/120g – 2 x 20 seconds", "2 shots, 80mls/80g – 20 seconds"], a: 1 },
+      { q: "Per the Coffee Shots & Decaf Extraction Guide, a Flat White Small uses:", o: ["Cortissimo – 3 Shots, 30mls/30g – 15 Seconds", "Corto – 2 Shots, 10mls/10g – 5 Seconds", "2 Shots, 60mls/60g – 20 Seconds", "1 Shot, 30mls/30g – 20 Seconds"], a: 0 },
+      { q: "What is the standard extra shot addition for an Americano (all sizes)?", o: ["1 x 20ml/20g", "1 x 30ml/30g", "1 x 40ml/40g", "1 x 10ml/10g"], a: 1 },
+      { q: "For Milk Steaming, what is the target temperature for a 600ml jug?", o: ["110°F / 43°C", "120°F / 49°C", "130°F / 54°C", "140°F / 60°C"], a: 1 },
+      { q: "For Milk Steaming, what is the target temperature for a 1L/1.5L jug?", o: ["120°F / 49°C", "130°F / 54°C", "140°F / 60°C", "150°F / 66°C"], a: 2 },
+      { q: "For Milk Steaming, 'extra hot' for a 600ml jug is achieved by stopping the steam arm at:", o: ["120°F / 49°C", "130°F / 54°C", "140°F / 60°C", "150°F / 66°C"], a: 1 },
+      { q: "For Milk Frothing, what is the target temperature for a 600ml jug?", o: ["110°F / 43°C", "120°F / 49°C", "130°F / 54°C", "140°F / 60°C"], a: 1 },
+      { q: "For Milk Frothing, extra hot for a 1L & 1.5L jug is achieved by stopping the steam arm at:", o: ["130°F / 54°C", "140°F / 60°C", "150°F / 66°C", "160°F / 71°C"], a: 2 },
+      { q: "For Chocolate Milk Frothing, what is the standard temperature for a 600ml jug?", o: ["120°F / 49°C", "130°F / 54°C", "140°F / 60°C", "150°F / 66°C"], a: 1 },
+      { q: "For Chocolate Milk Frothing, extra hot for a 1L & 1.5L jug is:", o: ["140°F / 60°C", "150°F / 66°C", "160°F / 71°C", "170°F / 77°C"], a: 2 },
+      { q: "In Milk Texturing, how far under the surface of the milk should the steam arm be positioned to create the whirlpool effect?", o: ["Slightly off centre, 1 cm under the surface", "Directly in the centre, 2 cm under the surface", "At the base of the jug", "On the surface, not submerged"], a: 0 },
+      { q: "In Milk Texturing, how many seconds should you listen for the 'chirping' sound?", o: ["2–4 seconds", "5–8 seconds", "10–12 seconds", "15–20 seconds"], a: 1 },
+      { q: "In Milk Texturing, at what angle should the jug be tilted to create the whirlpool effect?", o: ["20 degrees", "30 degrees", "40 degrees", "60 degrees"], a: 2 },
+      { q: "How often must a milk thermometer be calibrated at a minimum?", o: ["Once a week", "At least 3 times a week", "Once a day", "Once a month"], a: 1 },
+      { q: "In milk thermometer calibration (stores with ice), what should the thermometer read?", o: ["32°F (+/- 2°F) / 0°C (+/- 2°C)", "30°F (+/- 1°F) / -1°C (+/- 1°C)", "34°F (+/- 2°F) / 1°C (+/- 2°C)", "28°F (+/- 2°F) / -2°C (+/- 2°C)"], a: 0 },
+      { q: "In milk thermometer calibration, how full should the medium latte glass be filled with cold water relative to the ice?", o: ["To the top", "1/3rd or to the middle of the O", "Half full", "Just enough to cover the bottom"], a: 1 },
+      { q: "How often must a digital probe be calibrated at a minimum?", o: ["Daily", "Weekly", "Monthly", "3 times a week"], a: 1 },
+      { q: "In digital probe calibration, the probe should give a reading of:", o: ["-2°C to 0°C / 28°F–32°F", "-1°C and +1°C / 31°F–33°F", "0°C to 2°C / 32°F–36°F", "-3°C to -1°C / 27°F–30°F"], a: 1 },
+      { q: "When cleaning milk/digital probe thermometers, what should be used?", o: ["Any wet cloth", "Sanitiser wipes only, to clean the thermometer only", "Dish soap and water", "Alcohol spray on the clips"], a: 1 },
+      { q: "What should NOT be done with milk jugs after cleaning/rinsing?", o: ["Air dry them", "Do not discard milk down hand wash sinks or the coffee machine drip tray", "Store on the back bar", "Attach a clip and thermometer"], a: 1 },
+      { q: "As a minimum, milk jugs should be fully rinsed at the back bar sink at which times?", o: ["Every hour on the hour", "10AM-11AM, 2PM-3PM, 6PM-7PM, 10PM-11PM", "Only at opening and closing", "Every 15 minutes"], a: 1 },
+      { q: "At end of day cleaning for milk jugs, what should be removed from all jugs before dishwashing?", o: ["Nothing needs removing", "Thermometers and clips", "Only the lids", "The rubber base"], a: 1 },
+      { q: "For Whipped Cream, how long should the canister be shaken?", o: ["10 seconds", "20 seconds", "30 seconds", "45 seconds"], a: 2 },
+      { q: "What is the day dot shelf life for whipping cream once the canister is filled?", o: ["12 Hours", "24 Hours", "48 Hours", "3 Days"], a: 1 },
+      { q: "What is the day dot shelf life for a cream carton once opened (as long as it doesn't exceed the use-by date)?", o: ["24 Hours", "2 Days", "3 Days", "1 Week"], a: 2 },
+      { q: "Regarding sauce/syrup pumps, what should never be done?", o: ["Reuse the same pump for the same flavour", "Place pumps into the dishwasher", "Wipe bottles with a damp blue cloth", "Prime a new pump with 1 dose"], a: 1 },
+      { q: "What can NOT be made with dairy alternatives?", o: ["Lattes", "Milk whip / cold foam", "Cappuccinos", "Hot chocolate"], a: 1 },
+      { q: "In Milk Babyccino/Hot Chocolate Babyccino preparation, what important step should NOT be done?", o: ["Pour cold milk into the cup first", "Heat the espresso cup first", "Froth the milk to standard", "Serve with a teaspoon"], a: 1 },
+      { q: "What is the standard milk quantity for a Small Flat White?", o: ["250mls", "300mls", "350mls", "400mls"], a: 1 },
+      { q: "What is the standard milk quantity for a Medium Flat White?", o: ["250mls", "300mls", "350mls", "400mls"], a: 2 },
+      { q: "How much micro-bubble foam should a Flat White have at most?", o: ["No foam at all", "0.5cm", "1cm", "2cm"], a: 1 },
+      { q: "For a Small Flat White, what coffee shot is extracted?", o: ["Corto shot", "Cortissimo shot", "Double Ristretto", "Single Espresso"], a: 1 },
+      { q: "For a Medium Flat White, what coffee shots are extracted?", o: ["Cortissimo & Corto shot", "Two Cortissimo shots", "Double Espresso", "Triple shot"], a: 0 },
+      { q: "What milk quantity is used for a Magic?", o: ["250mls", "300mls", "350mls", "110mls"], a: 1 },
+      { q: "What coffee shots make up a Magic?", o: ["Single Espresso", "2 Ristretto (40ml)", "Double Espresso", "Cortissimo shot"], a: 1 },
+      { q: "In the Magic recipe, how much milk goes into the finished cup?", o: ["90mls", "100mls", "110mls", "150mls"], a: 2 },
+      { q: "A Black Corto should have what volume and crema?", o: ["60ml with 3mm crema", "30ml with 5mm crema", "90ml with 2mm crema", "60ml with 1mm crema"], a: 0 },
+      { q: "A Black Corto is extracted using what shot volume and time?", o: ["Double shot, 60mls in 20 seconds", "Triple Shot, 60mls in 20 seconds", "Single shot, 30mls in 15 seconds", "Triple Shot, 90mls in 30 seconds"], a: 1 },
+      { q: "A Black Corto Decaf is made using:", o: ["1 Decaf Pod, 30mls in 10 sec", "2 Decaf Pods (1x30mls in 10 sec)", "3 Decaf Pods", "Decaf is not available for Black Corto"], a: 1 },
+      { q: "What should a Black Corto be served with?", o: ["Turkish Delight", "Almond Biscotti", "Marshmallow", "Cinnamon stick"], a: 1 },
+      { q: "What is the standard milk quantity for a Small Latte?", o: ["200mls", "250mls", "300mls", "350mls"], a: 1 },
+      { q: "How many coffee shots are used for a Small Latte Take Away?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 1 },
+      { q: "How many coffee shots are used for a Small Latte Dine In?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 0 },
+      { q: "How much froth should a Latte have?", o: ["No froth", "1cm +/- 2mls", "3cm +/- 2mls", "0.5cm exactly"], a: 1 },
+      { q: "What is the standard milk quantity for a Large Cappuccino?", o: ["200mls", "250mls", "300mls", "350mls"], a: 2 },
+      { q: "How many shots are used for a Medium Cappuccino?", o: ["2 shots", "3 shots", "4 shots", "1 shot"], a: 1 },
+      { q: "What is the ideal ratio breakdown for a Cappuccino?", o: ["1/2 froth, 1/2 coffee", "1/3 froth, 1/3 frothed milk and 1/3 coffee", "All milk, coffee on top", "1/4 froth, 3/4 coffee"], a: 1 },
+      { q: "For a takeaway Cappuccino, how should chocolate dusting be applied?", o: ["Using a Costa approved stencil", "Without using a stencil", "It should not be applied for takeaway", "Only if the customer asks in writing"], a: 1 },
+      { q: "What is the standard milk for an Espresso Macchiato mark?", o: ["A large pour of steamed milk", "A small amount of freshly frothed milk to mark the top", "Condensed milk", "Whipped cream"], a: 1 },
+      { q: "Single/Double Espressos/Ristrettos should have an even spread with a minimum of how much crema?", o: ["1mm", "2mm", "3mm", "5mm"], a: 2 },
+      { q: "For an Americano, how much hot water is used to fill the cup initially?", o: ["1/3rd", "1/2", "2/3rds", "Full cup"], a: 2 },
+      { q: "How many shots does a Large Americano use?", o: ["2 Shots", "3 Shots", "4 Shots", "5 Shots"], a: 2 },
+      { q: "What is the standard milk quantity for a Small Mocha?", o: ["150mls", "200mls", "250mls", "300mls"], a: 1 },
+      { q: "How many scoops of Hot Chocolate Powder go into a Medium Mocha?", o: ["1 Scoop", "2 Scoops", "3 Scoops", "4 Scoops"], a: 2 },
+      { q: "How much froth should a Mocha have?", o: ["None", "1cm +/- 2mls", "0.5cm exactly", "3cm"], a: 1 },
+      { q: "For a Mocha Corto, how much milk/alternative is added to the 600ml jug?", o: ["100mls", "150mls", "200mls", "250mls"], a: 1 },
+      { q: "How many scoops of Hot Chocolate Powder are added for a Hot Chocolate Small?", o: ["1 Scoop", "2 Scoops", "3 Scoops", "4 Scoops"], a: 1 },
+      { q: "What is the standard milk quantity for a Large Hot Chocolate?", o: ["250mls", "300mls", "350mls", "400mls"], a: 2 },
+      { q: "For White Hot Chocolate, how many pumps of white chocolate sauce go into a Medium?", o: ["2 Pumps", "3 Pumps", "4 Pumps", "5 Pumps"], a: 1 },
+      { q: "What milk quantity is used in a Small White Hot Chocolate?", o: ["200mls", "250mls", "300mls", "350mls"], a: 1 },
+      { q: "For Chai Latte, how many pumps of Chai Syrup go into a Large?", o: ["2 Pumps", "3 Pumps", "4 Pumps", "5 Pumps"], a: 2 },
+      { q: "Chai Latte can market-specifically be finished with what topping?", o: ["Cocoa powder", "Cinnamon dust", "Nutmeg", "Chocolate shavings"], a: 1 },
+      { q: "What milk quantity is used for a Milk Babyccino?", o: ["100mls", "150mls", "200mls", "250mls"], a: 1 },
+      { q: "What is added to a cup before pouring frothed milk in a Babyccino to lower its temperature?", o: ["Ice cubes", "Cold milk/alternative", "Cold water", "Nothing is added"], a: 1 },
+      { q: "What size jug is used for the Milk Babyccino base?", o: ["250ml jug", "600ml jug", "1L jug", "1.5L jug"], a: 1 },
+      { q: "In Hot Chocolate Babyccino, what topping is served if available?", o: ["Whipped cream", "One marshmallow", "Cinnamon stick", "Cappuccino dusting only"], a: 1 },
+      { q: "For Tea, how much second teabag can be added if requested?", o: ["Never, only 1 teabag allowed", "A 2nd teabag can be added for free", "Only if the customer pays extra", "Only for Decaf tea"], a: 1 },
+      { q: "Infused Tea should be filled with hot water to what level?", o: ["1/3rd", "1/2", "2/3rds", "Full"], a: 2 },
+      { q: "What temperature should the Bunn Filter Coffee Machine be leveled at?", o: ["90 degrees", "93 degrees", "96 degrees", "100 degrees"], a: 2 },
+      { q: "For a Small Spanish Latte, how many pumps of Condensed Milk Sauce are added?", o: ["2 Pumps", "3 Pumps", "4 Pumps", "5 Pumps"], a: 1 },
+      { q: "What shelf life in side chiler Condensed Milk ?", o: ["4 Weeks", "1 Weeks", "12 Weeks", "3 Months"], a: 1 },
+      { q: "For Caramel Macchiato, what is the froth layer thickness when pouring milk?", o: ["1cm", "2-3cm", "4-5cm", "No froth layer"], a: 1 },
+      { q: "What syrup is added before the milk for a Caramel Macchiato, and how many pumps for a Medium?", o: ["Caramel syrup, 3 pumps", "Vanilla Syrup, 3 Pumps", "Chai Syrup, 3 Pumps", "Hazelnut syrup, 2 pumps"], a: 1 },
+      { q: "Caramel Macchiato is finished with what topping?", o: ["Cinnamon dust", "Zigzag of Caramel sauce", "Chocolate shavings", "Whipped cream"], a: 1 },
+      { q: "For Matcha Latte, how many scoops of Matcha Powder are used for a Small?", o: ["1 Scoop", "2 Scoops", "3 Scoops", "4 Scoops"], a: 1 },
+      { q: "Bon Accord No Sugar Matcha Powder has what open shelf life?", o: ["1 month", "2 months", "3 months", "6 months"], a: 2 },
+      { q: "In Turkish Coffee preparation, how many grams of ground coffee are used for a Single?", o: ["7 gms with 1 white sugar sachet", "14 gms with 2 white sugar sachets", "10 gms with no sugar", "21 gms with 3 sachets"], a: 0 },
+      { q: "In Turkish Coffee preparation, a Double uses how much ground coffee and sugar?", o: ["7 gms, 1 sachet", "14 gms, 2 white sugar sachets", "10 gms, 1 sachet", "21 gms, 2 sachets"], a: 1 },
+      { q: "What grinder is used for Turkish Coffee?", o: ["Mini Mazzer", "Ditting 807 Grinder", "Mazzer Grinder", "Hario Grinder"], a: 1 },
+      { q: "If a customer asks for 2 single Turkish coffees, how many grams of ground coffee should be used?", o: ["7 grams", "14 grams total, placing 2 solo cups under", "21 grams", "You must make them separately, never together"], a: 1 },
+      { q: "What machine is used to extract Turkish coffee?", o: ["Bunn ICB machine", "Arzum Okka Turkish Coffee Machine", "Vintage coffee machine", "Hario jug"], a: 1 },
+      { q: "What is served alongside Turkish Coffee?", o: ["Biscotti", "Turkish Delight and a glass of cold water", "A marshmallow", "Cinnamon stick"], a: 1 },
+      { q: "For a Corto hot drinks, how many pumps of syrup we used?", o: ["1 Pump", "2 Pumps", "3 Pumps", "4 Pumps"], a: 0 },
+      { q: "For syrup , how many pumps of syrup we used for a Large hot drink?", o: ["2 Pumps", "3 Pumps", "4 Pumps", "5 Pumps"], a: 2 },
+      { q: "For Cold Foam made with ice, what type of milk must be used?", o: ["Whole/full fat milk", "Chilled Skimmed / 0% fat milk", "Any dairy alternative", "Semi-skimmed milk"], a: 1 },
+      { q: "Where must skimmed milk be taken from every time to whip correctly for Cold Foam?", o: ["Room temperature storage", "The fridge", "The freezer", "Pre-warmed containers"], a: 1 },
+      { q: "Using the HB Milk Whipper, how long should you whip the milk for Cold Foam?", o: ["15 seconds", "20 seconds", "30 seconds", "45 seconds"], a: 2 },
+      { q: "What speed/notch setting is used on the Milk Whipper for Cold Foam?", o: ["High – notch 3", "Low – notch 1", "Medium – notch 2", "Variable, no set notch"], a: 1 },
+      { q: "In the Iced Espresso Range, how long should the shaker be shaken for?", o: ["3 seconds", "5 seconds", "10 seconds", "15 seconds"], a: 1 },
+      { q: "For Iced Americano, pre-chilled water is added to which line on the cup/glass?", o: ["Line 1", "Line 2", "Line 3", "Line 4"], a: 2 },
+      { q: "How many shots does a Large Iced Latte use?", o: ["2 Shots", "3 Shots", "4 Shots", "1 Shot"], a: 1 },
+      { q: "In Iced Cappuccino, what type of milk must the Milk Whip be made with for the standard version?", o: ["Whole milk", "Skimmed / 0% fat Milk", "Semi-skimmed", "Oat milk"], a: 1 },
+      { q: "What stencil is used for chocolate dusting on a drink-in Iced Cappuccino?", o: ["Costa approved standard stencil", "3-Bean stencil", "No stencil is used", "Heart stencil"], a: 1 },
+      { q: "In Iced Mocha, ice is added to line 2 of the shaker and shaken for how long?", o: ["3 seconds", "5 seconds", "8 seconds", "10 seconds"], a: 1 },
+      { q: "For Iced Chocolate, how many pumps of  Chocolate Sauce go into a Medium?", o: ["2 pumps", "3 pumps", "4 pumps", "5 pumps"], a: 1 },
+      { q: "In the Iced Magic recipe, how much Monin Gomme syrup is added?", o: ["No syrup", "1 pump (5ml)", "2 pumps (10ml)", "3 pumps (15ml)"], a: 1 },
+      { q: "If a customer requests an Iced Magic with foam, what note is given regarding the shaker?", o: ["Shake normally as usual", "Do NOT shake the contents if customer requests with foam", "Shake for 10 seconds instead of 5", "Shaking is not relevant to foam requests"], a: 1 },
+      { q: "In Iced Magic, what coffee shot is used?", o: ["Single Espresso", "Double Ristretto (40ml)", "Cortissimo shot", "Triple shot"], a: 1 },
+      { q: "For the Peach or Lemon Classic Lemonade, how many pumps for a Medium?", o: ["2 pumps", "3 pumps", "4 pumps", "5 pumps"], a: 1 },
+      { q: "In Peach or Lemon Iced Tea (made to order), how long should tea brew using a timer?", o: ["30 seconds", "45 seconds", "60 seconds", "90 seconds"], a: 1 },
+      { q: "For the Lemon Hibiscus Iced Tea, how many pumps of Lemonade base for a Large?", o: ["2 pumps (30mls)", "3 pumps (45mls)", "4 pumps (60mls)", "5 pumps (75mls)"], a: 2 },
+      { q: "When brewing the Hibiscus Tea Base (batch brew), how many teabags are used?", o: ["3 Hibiscus teabags", "6 Hibiscus teabags", "9 Hibiscus teabags", "12 Hibiscus teabags"], a: 1 },
+      { q: "Hibiscus Tea Base should brew for how long before hot water is added to the top of the word 'Massimo'?", o: ["1 minute", "2 minutes 30 seconds", "5 minutes", "10 minutes"], a: 1 },
+      { q: "Once brewed, the Hibiscus/English Breakfast tea base jug is day dotted for how long?", o: ["12 hours", "24 hours", "48 hours", "3 days"], a: 1 },
+      { q: "When Brewing Tea Base (English Breakfast, batch brew), hot water is added to the top of which word on the shaker?", o: ["Massimo", "Large", "Primo", "Medio"], a: 1 },
+      { q: "For Mint Lemonade, how many fresh mint leaves are used for a Small?", o: ["4", "6", "8", "10"], a: 1 },
+      { q: "Mint Lemonade is blended for how long on high?", o: ["15 seconds", "20 seconds", "30 seconds", "45 seconds"], a: 2 },
+      { q: "For Peach Berry Lemonade, what is added into the shaker along with the lemonade?", o: ["1 lemon dried, 2 scoop dried strawberry", "1 scoop dried peach, 2 scoops dried strawberry", "Only dried strawberry", "Fresh peach slices"], a: 0 },
+      { q: "For Strawberry Lemonade Medium, how many pumps each of lemonade and strawberry are used?", o: ["1 pump each", "1.5 pumps each", "2 pumps each", "3 pumps each"], a: 1 },
+      { q: "In the Core Frappé Range, how many scoops of milkshake powder go into a Large?", o: ["2 scoops", "3 scoops", "4 scoops", "5 scoops"], a: 2 },
+      { q: "The Core Frappé Range is blended on program 1, or how many seconds on high?", o: ["10 seconds", "15 seconds", "20 seconds", "30 seconds"], a: 1 },
+      { q: "For Strawberry Crumble Frappé, how many scoops of crumble are added for a Medium?", o: ["2 scoops", "3 scoops", "4 scoops", "5 scoops"], a: 1 },
+      { q: "Matcha Frappé Large uses how many scoops of matcha powder?", o: ["3 scoops", "4 scoops", "5 scoops", "6 scoops"], a: 2 },
+      { q: "Matcha Frappé should be blended on high mode for how long?", o: ["15 seconds", "20 seconds", "30 seconds", "45 seconds"], a: 2 },
+      { q: "For Cold Brew, what type of milk can Cold Foam only be made with?", o: ["Whole milk", "Skimmed Milk", "Oat milk", "Any dairy alternative"], a: 1 },
+      { q: "In brewing Cold Brew using the Toddy method, how many litres of room-temperature filtered water are measured into the container first?", o: ["6 litres", "9 litres", "12 litres", "3 litres"], a: 1 },
+      { q: "In the Toddy Cold Brew method, how much coffee grind is added into the filter (global standard)?", o: ["550g", "650g", "720g", "800g"], a: 2 },
+      { q: "In MENA markets, how much coffee grind (in sachets/grams) is used for the Toddy Cold Brew method?", o: ["550g / 11 sachets", "650g / 12 sachets", "720g / 14 sachets", "480g / 9 sachets"], a: 0 },
+      { q: "After the Toddy filter is inserted, how much additional water is poured through the coffee?", o: ["1 litre", "2 litres", "3 litres", "5 litres"], a: 2 },
+      { q: "How many hours after starting should the Toddy cold brew filter be removed?", o: ["12 hours", "16 hours", "20 hours", "24 hours"], a: 2 },
+      { q: "Once strained into a serving jug, Toddy cold brew is day dotted with a shelf life of:", o: ["2 days", "3 days", "5 days", "7 days"], a: 2 },
+      { q: "In the Hario Jug Cold Brew method, how much filtered water is measured in total?", o: ["500ml", "700ml", "1 litre", "1.5 litres"], a: 2 },
+      { q: "In the Hario Jug method (global markets), how much coffee grind is added to the filter?", o: ["50g", "60g", "70g", "80g"], a: 1 },
+      { q: "In the Hario Jug method for MENA markets, how much coffee grind (sachet) is used?", o: ["50g sachet", "60g sachet", "70g sachet", "80g sachet"], a: 0 },
+      { q: "How much of the total water is poured into the Hario cold brew jug first (before adding the filter/coffee)?", o: ["300ml", "500ml", "700ml", "900ml"], a: 2 },
+      { q: "Costa Iced Drinks in Pet Cans come in how many sizes?", o: ["1 size", "2 sizes (Small & Medium)", "3 sizes", "4 sizes"], a: 1 },
+      { q: "What happens after the START button is pressed on the Pet Can sealing machine?", o: ["Nothing, you must manually seal", "The can base raises and the lid seals in less than 5 seconds", "It takes 30 seconds to seal", "The machine must be reset"], a: 1 },
+      { q: "What must NEVER be done to a Pet Can after it has been sealed?", o: ["Serve with a straw", "Add a tissue", "Shake the can", "Serve immediately"], a: 2 },
+      { q: "Which drinks are NOT permitted to be served in pet cans?", o: ["Cold Brew and Lemonades", "Iced Teas and Iced Latte", "All frappes & cream topped drinks", "Iced Americano and Iced Chocolate"], a: 2 },
+      { q: "For canned drink orders with multiple items in a single KOT, what must you use to mark the can?", o: ["Write the full beverage name", "Use a sharpie pen and codes on line 3", "Use a sticker only", "No marking is needed"], a: 1 },
+      { q: "What is the shelf life/scoop colour for Frappé Powder (small)?", o: ["8 weeks / Blue scoop", "12 weeks / Coral scoop", "12 weeks / Blue scoop", "4 weeks / Coral scoop"], a: 1 },
+      { q: "What is the shelf life/scoop colour for the Medium Frappé Powder scoop?", o: ["12 weeks / Coral scoop", "12 weeks / Blue scoop", "8 weeks / Blue scoop", "4 weeks / Blue scoop"], a: 1 },
+      { q: "What is the open shelf life for prepared Matcha in a squeezy bottle (kept chilled)?", o: ["1 day", "2 days", "3 days", "1 week"], a: 1 },
+      { q: "What is the open shelf life of chilled water in a jug?", o: ["12 hours", "24 hours", "48 hours", "3 days"], a: 1 },
+      { q: "What is the open shelf life of a dairy alternative once the carton is opened?", o: ["3 days", "5 days", "1 week", "2 weeks"], a: 1 },
+      { q: "What is the open shelf life of Light Whip/Whipped Cream once in a canister?", o: ["12 Hours", "24 Hours", "48 Hours", "3 Days"], a: 1 },
+      { q: "What is the open shelf life of Whipping Cream once the carton/bottle is opened?", o: ["24 Hours", "2 Days", "3 Days", "5 Days"], a: 2 },
+      { q: "What is the open shelf life/scoop colour of Costa Instant Coffee?", o: ["2 weeks / Clear scoop", "4 weeks / Purple scoop", "8 weeks / Purple scoop", "12 weeks / Clear scoop"], a: 1 },
+      { q: "What is the open shelf life for Caramel/Vanilla/Hazelnut/Cinnamon Bun syrups ?", o: ["8 weeks ", "12 weeks ", "3 months / White 10ml pump", "12 weeks / White 10ml pump"], a: 1 },
+      { q: "What is the Temperature Danger Zone where food poisoning bacteria can grow?", o: ["0°C – 5°C", "5°C – 65°C", "10°C – 50°C", "5°C – 100°C"], a: 1 },
+      { q: "Refrigerated food must be kept at what temperature or below (country variations may apply)?", o: ["8°C", "5°C", "3°C", "10°C"], a: 1 },
+      { q: "Under the 4 Hour Rule, after 4 hours, what must happen to unsold high-risk products?", o: ["They can be sold at a discount", "They must be discarded and recorded as wastage", "They can be returned to the fridge", "They must be frozen for later use"], a: 1 },
+      { q: "If a fridge is found storing high-risk food above 5°C, who must this be reported to first?", o: ["Head office", "The Shift Leader", "The pest control provider", "The customer"], a: 1 },
+      { q: "What are the steps to take before implementing the 4 Hour Rule for a broken fridge?", o: ["Immediately discard all food", "Try to adjust temperature manually, then call a service engineer if that fails, then try moving food to another fridge at 5°C or colder", "Call the fire department", "Close the store"], a: 1 },
+      { q: "What must be done when a customer notifies a team member of an allergy or intolerance (per the 5-step process)?", o: ["Ignore it and proceed as normal", "Team member refers to the Product Nutrition and Allergy Guide, explains preparation, customer confirms order, then order is prepared", "Immediately refuse to serve the customer", "Ask the customer to leave"], a: 1 },
+      { q: "Team members who have NOT completed Safe and Legal – Allergens training must:", o: ["Serve allergy customers with extra care", "Not serve customers who suffer from an allergy or intolerance", "Wear the allergen badge as a placeholder", "Ask a colleague to double check afterward"], a: 1 },
+      { q: "What is cross contamination as defined in the manual?", o: ["Mixing two drink orders together", "Transfer of something that could cause harm (allergen, bacteria) from one surface to another", "Using the wrong cup size", "Serving the wrong flavour syrup"], a: 1 },
+      { q: "Where must the Product Nutrition and Allergy Guide be kept?", o: ["In the back office only", "As near to the till as possible", "In the manager's office", "Only accessible digitally"], a: 1 },
+      { q: "Nutrition information is provided per:", o: ["Per serving only", "Per 100g/ml and per pack/portion", "Per teaspoon", "Per litre only"], a: 1 },
+      { q: "Team members who have completed allergen training but are NOT confident dealing with an allergy sufferer's order should:", o: ["Wear the allergen badge anyway", "Not wear an allergen badge", "Ask another untrained colleague to help", "Refuse to serve any customer that day"], a: 1 },
+      { q: "When should you wash your hands, according to the 'Before' list?", o: ["After using the toilet", "Before starting work, handling food, and changing tasks at the bar", "After blowing your nose", "After touching hair or face"], a: 1 },
+      { q: "Which is listed under 'After' you should wash your hands?", o: ["Starting work", "Handling food", "Touching dogs", "Changing tasks at the bar"], a: 2 },
+      { q: "What tool/item is NOT permitted for hand washing?", o: ["Liquid unscented soap", "Paper towels/blue roll", "Nail brushes", "Hand dryer"], a: 2 },
+      { q: "In the colour coding system, which colour is used for Almond dairy alternative jugs?", o: ["Yellow", "Green", "Brown", "Blue"], a: 2 },
+      { q: "In the colour coding system, which colour is used for Oat dairy alternative jugs?", o: ["Yellow", "Green", "Brown", "White"], a: 0 },
+      { q: "In the colour coding system, which colour represents Soya?", o: ["Yellow", "Green", "Blue", "White"], a: 1 },
+      { q: "In the colour coding system, which colour represents Lactose Free milk jugs?", o: ["Blue", "Green", "White", "Brown"], a: 2 },
+      { q: "Which colour chopping board is used for Vegetarian and Vegan (with PE wrap)?", o: ["White", "Green", "Brown", "Red"], a: 1 },
+      { q: "Which colour chopping board is used for Meat & Fish?", o: ["Green", "Brown", "White", "Red"], a: 2 },
+      { q: "Which colour cleaning cloth is designated for Steam Arms Only (Dairy Milk)?", o: ["White", "Green", "Brown", "Blue"], a: 1 },
+      { q: "Which colour cleaning cloth is designated for Food Contact Surfaces & Coffee Machine Surface?", o: ["Brown", "White", "Red", "Blue"], a: 3 },
+      { q: "Which colour cleaning cloth is designated for Toilets?", o: ["White", "Blue", "Red", "Green"], a: 2 },
+      { q: "Before handling any ice equipment, what must always be done first?", o: ["Wear gloves", "Wash your hands following the Handwashing SOP", "Wipe the scoop with sanitiser", "Check the ice temperature"], a: 1 },
+      { q: "Where should the blue ice scoop be stored when not in use?", o: ["Inside the ice machine", "On the floor near the machine", "Over a clean medium sized china cup, handle pointing down", "In a drawer with other utensils"], a: 2 },
+      { q: "Ice scoops must be:", o: ["Transparent for hygiene visibility", "Coloured (any colour, but transparent scoops are not allowed)", "Made of wood only", "Disposable and replaced daily"], a: 1 },
+      { q: "What must be checked during the pre-opening cleanliness and pest activity check?", o: ["Only the till float", "Signs of pest activity in counter/bar, back of house storage, dishwasher area, and front of house", "Only the outside seating area", "Only the stockroom"], a: 1 },
+      { q: "If signs of pests are detected, what must you do?", o: ["Ignore them if business is busy", "Clear droppings, sanitise the area, dispose of affected products, and call the pest control provider immediately", "Simply note it for the next shift", "Close the store for the day"], a: 1 },
+      { q: "For all pre-packaged items (e.g. sandwiches), where is allergen information found?", o: ["Only in the back-office folder", "Printed on the packaging", "Only available by asking head office", "It is not required for pre-packaged items"], a: 1 },
+      { q: "According to the manual, ignorance of allergen requirements is:", o: ["Acceptable if unintentional", "No excuse — it is a legal requirement", "Only an issue for managers", "Only relevant in the UK"], a: 1 },
+      { q: "Where must Costa Coffee approved name badges be worn for Baristas/Barista Maestros?", o: ["On the right side of the apron", "Front left of the full-length apron in the eyelet provided", "On the collar", "On the back of the apron"], a: 1 },
+      { q: "What length apron do Baristas and Barista Maestros wear?", o: ["Half length apron", "Full-length apron", "No apron required", "Bib-only apron"], a: 1 },
+      { q: "What length apron do Managers wear?", o: ["Full-length apron", "Half length / short apron", "No apron", "Same as Baristas"], a: 1 },
+      { q: "When wearing a softshell jacket over the full-length apron, what must be done with the name badge?", o: ["Remove it", "Keep it under the apron", "Move it to the eyelet provided on the jacket so it remains visible", "Nothing changes"], a: 2 },
+      { q: "Who is permitted to wear an Allergen Badge?", o: ["All team members regardless of training", "Only those who have completed Safe and Legal – Allergens training and are confident", "Only Shift Leaders", "Only Managers"], a: 1 },
+      { q: "Regarding jewellery, how many wedding rings may be worn?", o: ["None allowed", "Only 1 plain wedding ring (no engravings or stones)", "Up to 2 rings", "Any number as long as plain"], a: 1 },
+      { q: "What is the rule for earrings?", o: ["Any style permitted", "Sleeper hoop style only, no detachable backs, max 1-2cm diameter", "Studs only, no hoops", "No earrings permitted at all"], a: 1 },
+      { q: "Are bracelets and wristbands permitted?", o: ["Yes, always", "No, unless for religious or medical alert purposes", "Only leather bracelets", "Only on the wrist not holding a tray"], a: 1 },
+      { q: "What is stated about false nails and nail varnish?", o: ["Clear varnish is allowed", "Not acceptable at any time, including clear varnish", "Allowed if short", "Allowed only for managers"], a: 1 },
+      { q: "What should be done with visible cuts, sores and grazes?", o: ["Leave them uncovered for air exposure", "Cover with a blue plaster", "Cover with a standard skin-tone plaster", "Wrap in gauze only"], a: 1 },
+      { q: "Where should necklaces and religious symbols be worn?", o: ["Visible outside the t-shirt", "Inside the t-shirt neckline, not visible", "They are not permitted at all", "Only on a lanyard"], a: 1 },
+      { q: "If ill with vomiting/diarrhoea, what must a team member do before working?", o: ["Nothing, just wash hands more", "Get clearance from the shift leader", "Wear a mask and continue working", "Take medication and proceed"], a: 1 },
+      { q: "What footwear is explicitly listed as NOT sensible/not to be worn?", o: ["Trainers", "Sandals, flip flops, open-toed/backless shoes, high heels", "Black leather shoes", "Steel toe boots"], a: 1 },
+      { q: "What should be done with decanted products such as Hot Chocolate Powder and Frappé Powder opened?", o: ["No day dot needed if used same day", "A day dot", "A weekly inspection only", "Only a best-before date on the container"], a: 1 },
+      { q: "For open syrups & sauces (Costa branded/Monin), where should the day dot be placed?", o: ["On the pump", "On the bottle, not the pump", "On the box the bottle came in", "On the shelf label"], a: 1 },
+      { q: "Costa Collect: within how many seconds should a customer arriving be greeted with a Big Smile?", o: ["3 seconds", "5 seconds", "10 seconds", "15 seconds"], a: 1 },
+      { q: "In Delivery & Packaging, what gap should be left from the top of the cup for hot drinks?", o: ["1cm", "1.5cm", "2cm", "3cm"], a: 2 },
+      { q: "What must NOT be used to seal delivery bags?", o: ["Delivery stickers", "Staples", "A fold and stick method", "Tape"], a: 1 },
+      { q: "A small delivery bag can hold a maximum of how many drinks?", o: ["Any 2 drinks & small food orders", "Any 4 drinks", "Any 6 drinks", "Unlimited"], a: 0 },
+      { q: "A large delivery bag can hold a maximum of how many drinks?", o: ["Any 2 drinks", "Any 4 drinks", "Any 6 drinks & any food", "Any 8 drinks"], a: 2 },
+      { q: "In manual handling for lifting, where should the load be relative to the body?", o: ["As far from the body as possible for leverage", "As close to the body as possible", "Held above the head", "At arm's length"], a: 1 },
+      { q: "What should begin the upward movement when lifting?", o: ["Straightening the legs first", "Raising the head", "Pulling with the arms", "Twisting the torso"], a: 1 },
+      { q: "Slips, trips and falls are the single most common cause of what at Costa?", o: ["Customer complaints", "Injury at work", "Product waste", "Equipment failure"], a: 1 },
+      { q: "What is one recommended prevention measure for slips, trips and falls?", o: ["Removing all mats", "Correct use of the wet floor sign", "Turning off lights during cleaning", "Avoiding the use of footwear guidelines"], a: 1 },
+      { q: "If glass or crockery breaks behind the counter, what should you do first?", o: ["Sweep it up immediately with a broom", "Stop activities in and around the area", "Call the fire brigade", "Continue serving customers as normal"], a: 1 },
+      { q: "When a glass breakage occurs by the ice machine/ice wells, what should be used to remove the ice?", o: ["Bare hands", "A plastic scoop, placing ice in the sink to melt", "A metal scoop", "Leave the ice in place"], a: 1 },
+      { q: "After a glass/crockery breakage is cleaned, who must inspect the affected area?", o: ["Any available team member", "The shift runner", "Head office remotely", "No inspection is required"], a: 1 },
+      { q: "All Costa Coffee stores have what smoking policy?", o: ["Smoking allowed in designated indoor areas", "No smoking, including vaping/electronic cigarettes", "Smoking allowed for staff only", "Smoking allowed after closing hours"], a: 1 },
+      { q: "What size sign must be displayed at store entrances regarding no smoking?", o: ["No smaller than A6", "No smaller than A5", "No smaller than A4", "No smaller than A3"], a: 1 },
+      { q: "Who must empty nappy/sanitary bins?", o: ["Any team member", "The shift leader", "A professional company (where applicable) — not team members", "The cleaning contractor at night only"], a: 2 },
+      { q: "In Beverage Sampling, what must the team member always wear and have visible?", o: ["A hair net", "The allergen pin badge", "Gloves at all times", "A face mask"], a: 1 },
+      { q: "Beverage sampling should be:", o: ["Left unattended on a tray for customers", "Interactive and not left unattended", "Given only to seated customers", "Limited to one sample per store per day"], a: 1 },
+      { q: "How many sample cups are placed on a tray for hot/blended sampling?", o: ["6", "8", "10", "12"], a: 3 },
+      { q: "What must NOT be placed on sample cups?", o: ["A straw", "A lid", "A napkin", "A label"], a: 1 },
+      { q: "Only how many drinks should be sampled at a time to avoid cross contamination?", o: ["One drink at a time", "Two drinks at a time", "Three drinks at a time", "As many as needed"], a: 0 },
+      { q: "What must be kept switched on overnight (coffee machine cleaning)?", o: ["The dishwasher", "The machine/s", "The grinder", "The oven"], a: 1 },
+      { q: "In Group Head Cleaning (Futura, Valina & Vintage), how many scoops of cleaning powder are put into the blank basket?", o: ["1 scoop", "2 scoops", "3 scoops", "4 scoops"], a: 1 },
+      { q: "In Group Head Cleaning (Marisa/Lisa), how long should the chemical be allowed to foam initially?", o: ["10 seconds", "20 seconds", "30 seconds", "60 seconds"], a: 2 },
+      { q: "In Group Head Cleaning (Marisa/Lisa), the cycle should be repeated until:", o: ["5 minutes have passed", "The foam runs white", "The powder runs out", "The timer beeps 3 times"], a: 1 },
+      { q: "What will happen if you put Group Handles in the dishwasher or leave them in a large tub of water overnight?", o: ["Nothing, it's recommended practice", "It will damage the handles and impact coffee quality", "It improves cleaning results", "It's required for hygiene certification"], a: 1 },
+      { q: "In Group Handle Cleaning, for a 1L jug, how many scoops of cleaning powder are used?", o: ["1 scoop", "2 scoops", "3 scoops", "4 scoops"], a: 1 },
+      { q: "In Group Handle Cleaning, for a 1.5L jug, how many scoops of cleaning powder are used?", o: ["1 scoop", "2 scoops", "3 scoops", "4 scoops"], a: 2 },
+      { q: "Group handles should soak for how long during cleaning?", o: ["5-10 minutes", "20-30 minutes", "45-60 minutes", "2 hours"], a: 1 },
+      { q: "What must NEVER be placed through the dishwasher when cleaning grinders?", o: ["The tray", "Hoppers", "The cradle", "Blue cloths"], a: 1 },
+      { q: "Why must the knockout bin be cleaned out daily?", o: ["To save space", "Damp coffee grounds left will turn mouldy", "It's a fire hazard", "To recycle grounds faster"], a: 1 },
+      { q: "In HB Milk Whipper cleaning, what should NOT be placed in the metal cup when mixing?", o: ["Cold water", "Spoons or other utensils", "D10 sanitiser", "The agitator"], a: 1 },
+      { q: "During the HB Milk Whipper end of day full clean, how long should sanitiser be allowed to mix?", o: ["15 seconds", "30 seconds", "60 seconds", "90 seconds"], a: 1 },
+      { q: "What must be kept switched on overnight regarding the Ice Machine?", o: ["It should be switched off", "It should be kept switched on", "It doesn't matter", "Only during summer"], a: 1 },
+      { q: "In the weekly Ice Machine clean, D10 sanitiser is left for a contact time of how long?", o: ["15 seconds", "30 seconds", "60 seconds", "2 minutes"], a: 1 },
+      { q: "What should NOT be left in the ice well overnight?", o: ["The lid", "Ice", "The drainage tray", "Sanitiser residue"], a: 1 },
+      { q: "In Ice Well weekly cleaning, how is the drain sanitised?", o: ["Wiping only", "Pouring half a bottle of diluted D10 sanitiser", "Using bleach tablets", "Running hot water only"], a: 1 },
+      { q: "In Cannister (whipped cream) Cleaning, what must be inspected before reassembly?", o: ["Only the nozzle", "Thoroughly inspect washed canisters to make sure they are free of residues, rewash if necessary", "Only the charger holder", "Nothing, reassemble immediately"], a: 1 },
+      { q: "Before reassembling the cream canister and lid, what must always be done?", o: ["Spray with sanitiser only", "Wash your hands following the Handwashing SOP", "Check the gas bulb", "Air dry for 1 hour"], a: 1 },
+      { q: "For Chopping Boards/Knives/Tongs, at minimum how often should they be cleaned/replaced (per the guideline times)?", o: ["Every hour", "Opening, 10-11AM, 2-3PM, 6-7PM", "Only at closing", "Every 15 minutes"], a: 1 },
+      { q: "What must NOT be done to blender bases?", o: ["Spray D10 sanitiser on them", "Place through the dishwasher", "Wipe them clean", "Clean around the base"], a: 1 },
+      { q: "During Merrychef Cooling Down Procedure, how long does the cooling down process usually take?", o: ["5 minutes", "10 minutes", "20 minutes", "40 minutes"], a: 2 },
+      { q: "What can be used to speed up the Merrychef cooling down process?", o: ["Cold water spray", "Filling the metal gastro tray with ice", "Opening all doors fully", "Running the oven on high"], a: 1 },
+      { q: "During Merrychef cooling down, how should the door be left?", o: ["Fully open", "Fully closed", "Open slightly ajar (not left fully open)", "It doesn't matter"], a: 2 },
+      { q: "In Merrychef Oven Cleaning, what should NOT be used to clean the oven?", o: ["A pastry brush", "Scourers", "A blue cloth", "D2.3 Multipurpose Cleaner"], a: 1 },
+      { q: "In Merrychef Oven Cleaning, cleaning chemicals should NOT be applied to which area?", o: ["The cook plate", "The internal ceiling", "The door seal is fine to clean", "The cavity floor"], a: 1 },
+      { q: "In Merrychef Oven Cleaning, for stubborn dirt/debris, how long should it be left to soak?", o: ["5 minutes", "10 minutes", "20 minutes", "30 minutes"], a: 1 },
+      { q: "What should the microwave NEVER be used for?", o: ["Heating Costa food items", "Heating baby food/milk or unapproved customer items, or staff's own food", "Warming poached eggs", "Nothing, it can be used for anything"], a: 1 },
+      { q: "In microwave weekly cleaning, how is the air intake filter screw removed?", o: ["With a screwdriver", "With a small coin", "By hand only", "It cannot be removed"], a: 1 },
+      { q: "For Storage Fridge Cleaning, what should be done before cleaning inside the fridge?", o: ["Leave products in place", "Empty all products from the fridge first", "Only wipe visible spots", "Turn off the fridge for 24 hours"], a: 1 },
+      { q: "What should NOT be cleaned regarding fridges?", o: ["The seals", "The drip trays", "Any exposed areas at the back of the fridge", "The door and handle"], a: 2 },
+      { q: "In Sink Cleaning, D10 sanitiser must be left for a contact time of:", o: ["15 seconds", "30 seconds", "60 seconds", "2 minutes"], a: 1 },
+      { q: "What should always be placed down first before café floor mopping?", o: ["A dust sheet", "A wet floor sign", "Nothing needed", "A caution rope"], a: 1 },
+      { q: "Café area floor mopping should be done in what pattern?", o: ["Straight lines only", "Circular motion", "Figure of 8", "Random pattern"], a: 2 },
+      { q: "For toilet area cleaning, what is Costa's standard number of spot checks per day?", o: ["4", "6", "8", "10"], a: 2 },
+      { q: "In toilet area cleaning, which colour mop and bucket is used?", o: ["Blue", "Green", "Red", "Yellow"], a: 2 },
+      { q: "For DT Lane Cleaning (litter picking/pressure washing), what PPE is required?", o: ["Just gloves", "High Viz Vest/Jacket, goggles, strong gloves & enclosed shoes", "An apron only", "No PPE required outdoors"], a: 1 },
+      { q: "Before litter picking or pressure washing the DT lane, what must always be done first?", o: ["Notify head office", "Close the DT lane using barrier or cones", "Wait for a manager", "Turn off store power"], a: 1 },
+      { q: "In Coffee Catcher weekly cleaning, what is placed underneath the silver grid in the drain filter unit?", o: ["A sanitiser tablet", "A chlorine tablet (or market alternative)", "A coffee catcher sock", "A blue cloth"], a: 1 },
+      { q: "For Avocado on Toast, how many grams of smashed avocado are portioned onto the toast?", o: ["50gms", "75gms", "100gms", "150gms"], a: 2 },
+      { q: "What is the shelf life of the Smashed Avocado product?", o: ["1 day", "2 days", "3 days", "5 days"], a: 1 },
+      { q: "For the Omelette, how much liquid egg is poured into the pan?", o: ["100ml", "120ml", "150ml", "200ml"], a: 2 },
+      { q: "In Omelette prep, pre-cooked toppings are portioned at what weight each?", o: ["10g each", "20g each", "30g each", "40g each"], a: 1 },
+      { q: "How much olive oil (or butter) is added to the pan for the Omelette/Scrambled Eggs?", o: ["5ml", "10ml", "15ml", "20ml"], a: 1 },
+      { q: "For Poached Egg, hot water at what temperature is used to submerge the egg?", o: ["75°C", "80°C", "85°C", "90°C"], a: 2 },
+      { q: "For a single poached egg, how long should it be left in the hot water?", o: ["1 minute", "2 minutes", "3 minutes", "5 minutes"], a: 1 },
+      { q: "For 2 poached eggs prepared together, how long should they be left in the hot water?", o: ["2 minutes", "3 minutes", "4 minutes", "5 minutes"], a: 1 },
+      { q: "If a customer requests a hard poached egg, what additional step is taken?", o: ["Boil for an extra 5 minutes", "Place the bowl with egg & hot water in the microwave at 70% power for 1 minute 50 seconds", "Fry it separately", "Use a different supplier product"], a: 1 },
+      { q: "What is emphasized about the water used for poached eggs?", o: ["It can be reused for multiple orders", "Fresh hot water must be used for every order", "It should be cold, not hot", "Only bottled water can be used"], a: 1 },
+      { q: "What is the shelf life of prepared/dressed Generic Salad?", o: ["12 hours", "24 hours", "48 hours", "3 days"], a: 1 },
+      { q: "For Serving Salad, what is the portion weight for a Small size?", o: ["175gms", "275gms", "375gms", "475gms"], a: 1 },
+      { q: "For Serving Salad, what is the portion weight for a Large size?", o: ["375gms", "425gms", "475gms", "525gms"], a: 2 },
+      { q: "For Serving Salad (Medium), what is the portion weight?", o: ["275gms", "325gms", "375gms", "425gms"], a: 2 },
+      { q: "When toasting sourdough bread for the Omelette/Scrambled Eggs deli items, how is the toast typically cut before plating?", o: ["Left whole", "Cut diagonally", "Cut into small cubes", "Cut into strips"], a: 1 }
+    ];
 
-      // Section 2: Americano Standards & Variants (31-60)
-      { q: "What is the Extra Shot rule for Americano across all sizes?", o: ["1 x Single Ristretto", "1 x 10ml / 10g", "1 x 30ml / 30g For All Sizes", "2 x 30ml / 30g For All Sizes"], a: 2 },
-      { q: "What are the specifications for a Small Standard Americano?", o: ["1 shot, 30mls / 30g – 20 seconds", "2 shots, 60mls / 60g – 20 seconds", "3 shots, 80mls / 80g – 35 seconds", "2 shots, 40mls / 40g – 15 seconds"], a: 1 },
-      { q: "What are the specifications for a Small Decaf Americano?", o: ["1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "2 Pods, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 2 Shots, 40mls / 40g – 15 Seconds"], a: 0 },
-      { q: "What are the specifications for a Medium Standard Americano?", o: ["2 shots, 60mls / 60g – 20 seconds", "3 shots, 80mls / 80g – 35 seconds", "3 shots, 90mls / 90g – 35 seconds", "4 shots, 120mls / 120g – 35 seconds"], a: 1 },
-      { q: "What are the specifications for a Medium Decaf Americano?", o: ["1 Pod, 3 Shots, 80mls / 80g – 35 Seconds", "2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "2 Pods, 3 Shots, 80mls / 80g – 2x20 Seconds", "2 Pods, 4 Shots, 120mls / 120g – 2x20 Seconds"], a: 1 },
-      { q: "What are the specifications for a Large Standard Americano?", o: ["3 shots, 80mls / 80g – 35 seconds", "4 shots, 120mls / 120g – 2x20 seconds", "4 shots, 120mls / 120g – 35 seconds", "4 shots, 90mls / 90g – 2x20 seconds"], a: 1 },
-      { q: "What are the specifications for a Large Decaf Americano?", o: ["2 Pods, 4 Shots, 120mls / 120g – 2x20 Seconds", "1 Pod, 4 Shots, 120mls / 120g – 2x20 Seconds", "2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "2 Pods, 4 Shots, 90mls / 90g – 35 Seconds"], a: 0 },
-      { q: "What is the volume difference between a Medium Standard Americano and a Medium Decaf Americano?", o: ["Standard is 90mls; Decaf is 80mls", "Standard is 80mls; Decaf is 90mls", "Both are 80mls", "Both are 90mls"], a: 1 },
-      { q: "What is the extraction time for a Medium Standard Americano?", o: ["20 seconds", "15 seconds", "35 seconds", "2x20 seconds"], a: 2 },
-      { q: "What is the extraction time for a Medium Decaf Americano?", o: ["35 Seconds", "20 Seconds", "2x20 Seconds", "15 Seconds"], a: 2 },
-      { q: "How many shots are in a Large Standard Americano?", o: ["2 shots", "3 shots", "4 shots", "5 shots"], a: 2 },
-      { q: "How many decaf pods are needed for a Large Decaf Americano?", o: ["1 Pod", "2 Pods", "3 Pods", "4 Pods"], a: 1 },
-      { q: "How many decaf pods are needed for a Small Decaf Americano?", o: ["1 Pod", "2 Pods", "Half Pod", "3 Pods"], a: 0 },
-      { q: "What is the extraction time for a Large Standard Americano?", o: ["35 seconds", "20 seconds", "2x20 seconds", "15 seconds"], a: 2 },
-      { q: "What is the liquid volume of a Small Standard Americano?", o: ["30mls", "40mls", "60mls", "80mls"], a: 2 },
-      { q: "How many shots are in a Medium Standard Americano?", o: ["2 shots", "3 shots", "4 shots", "1 shot"], a: 1 },
-      { q: "What is the output weight of a Large Decaf Americano?", o: ["80g", "90g", "120g", "60g"], a: 2 },
-      { q: "Do Small Standard Americano and Small Decaf Americano have identical output volumes and extraction times?", o: ["No, Decaf is 40mls", "No, Decaf takes 15 seconds", "Yes, both are 60mls / 60g – 20 seconds", "No, Standard is 80mls"], a: 2 },
-      { q: "How many total shots are extracted for a Medium Decaf Americano?", o: ["2 Shots", "3 Shots", "4 Shots", "1 Shot"], a: 1 },
-      { q: "What volume/weight is added when ordering an Extra Shot in a Large Americano?", o: ["10ml / 10g", "20ml / 20g", "30ml / 30g", "60ml / 60g"], a: 2 },
-      { q: "In what sequence should an Americano be poured according to Costa standards?", o: ["Hot water first into cup, then extract espresso on top to preserve crema", "Espresso first into cup, then blast with steam wand water", "Cold water first, espresso, then microwave", "Espresso and milk simultaneously"], a: 0 },
-      { q: "If a customer requests cold milk with an Americano, how much head room should be left in the cup?", o: ["No room, fill water to brim", "Leave approximately 1.5 - 2 cm (or 10-15%) space for milk", "Fill cup halfway", "Fill cup with cold milk first"], a: 1 },
-      { q: "What is the standard water boiler dispensing temperature for Americano hot water?", o: ["70°C", "90°C - 94°C", "100°C boiling", "60°C"], a: 1 },
-      { q: "How many shots are in a Small Standard Americano?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 1 },
-      { q: "What is the liquid output weight of a Medium Standard Americano?", o: ["60g", "80g", "90g", "120g"], a: 1 },
-      { q: "What is the liquid output weight of a Medium Decaf Americano?", o: ["80g", "90g", "120g", "60g"], a: 1 },
-      { q: "What is the liquid output volume of a Large Standard Americano?", o: ["80mls", "90mls", "120mls", "150mls"], a: 2 },
-      { q: "What is the shot count for a Medium Decaf Americano?", o: ["2 Shots", "3 Shots", "4 Shots", "1 Shot"], a: 1 },
-      { q: "What is the total shot extraction time for Small Decaf Americano?", o: ["15 Seconds", "20 Seconds", "35 Seconds", "2x20 Seconds"], a: 1 },
-      { q: "When adding an extra shot to a Small Americano, what is the new total shot count?", o: ["2 Shots", "3 Shots", "4 Shots", "1 Shot"], a: 1 },
+    let currentUser = null;
+    let activeQuizQuestions = [];
+    let userAnswers = {};
+    let currentQuestionIndex = 0;
+    let isAnsweredCurrent = false;
 
-      // Section 3: Cappuccino Standards & Foaming (61-85)
-      { q: "What is the Extra Shot rule for Cappuccino across all sizes?", o: ["1 x Single Ristretto", "1 x 30ml / 30g For All Sizes", "1 x 10ml / 10g", "No extra shot allowed"], a: 1 },
-      { q: "What are the specifications for a Small Standard Cappuccino?", o: ["1 Shot, 30mls / 30g – 20 Seconds", "2 Shots, 60mls / 60g – 20 Seconds", "2 Shots, 40mls / 40g – 15 Seconds", "3 Shots, 80mls / 80g – 35 Seconds"], a: 1 },
-      { q: "What are the specifications for a Small Decaf Cappuccino?", o: ["1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "2 Pods, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 2 Shots, 40mls / 40g – 15 Seconds"], a: 0 },
-      { q: "What are the specifications for a Medium Standard Cappuccino?", o: ["2 Shots, 60mls / 60g – 20 Seconds", "3 Shots, 80mls / 80g – 35 Seconds", "3 Shots, 90mls / 90g – 35 Seconds", "4 Shots, 120mls / 120g – 2x20 Seconds"], a: 1 },
-      { q: "What are the specifications for a Medium Decaf Cappuccino?", o: ["1 Pod, 3 Shots, 80mls / 80g – 35 Seconds", "2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "2 Pods, 3 Shots, 80mls / 80g – 35 Seconds", "2 Pods, 4 Shots, 120mls / 120g – 2x20 Seconds"], a: 1 },
-      { q: "What are the specifications for a Large Standard Cappuccino?", o: ["3 Shots, 80mls / 80g – 35 Seconds", "4 Shots, 120mls / 120g – 2x20 Seconds", "4 Shots, 120mls / 120g – 35 Seconds", "4 Shots, 90mls / 90g – 2x20 Seconds"], a: 1 },
-      { q: "What are the specifications for a Large Decaf Cappuccino?", o: ["2 Pods, 4 Shots, 120mls / 120g – 2x20 Seconds", "1 Pod, 4 Shots, 120mls / 120g – 2x20 Seconds", "2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "2 Pods, 4 Shots, 90mls / 90g – 35 Seconds"], a: 0 },
-      { q: "What is the shot count and extraction time for a Medium Standard Cappuccino?", o: ["2 Shots – 20 Seconds", "3 Shots – 35 Seconds", "3 Shots – 20 Seconds", "4 Shots – 35 Seconds"], a: 1 },
-      { q: "What is the volume and weight of a Large Standard Cappuccino?", o: ["80mls / 80g", "90mls / 90g", "120mls / 120g", "60mls / 60g"], a: 2 },
-      { q: "How many decaf pods are used in a Medium Decaf Cappuccino?", o: ["1 Pod", "2 Pods", "3 Pods", "None"], a: 1 },
-      { q: "What is the extraction time for a Large Decaf Cappuccino?", o: ["35 Seconds", "20 Seconds", "2x20 Seconds", "15 Seconds"], a: 2 },
-      { q: "How many shots are in a Small Standard Cappuccino?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 1 },
-      { q: "What is the volume/weight of a Medium Standard Cappuccino?", o: ["60mls / 60g", "80mls / 80g", "90mls / 90g", "120mls / 120g"], a: 1 },
-      { q: "What is the volume/weight of a Medium Decaf Cappuccino?", o: ["80mls / 80g", "90mls / 90g", "120mls / 120g", "60mls / 60g"], a: 1 },
-      { q: "How many shots are in a Large Standard Cappuccino?", o: ["2 Shots", "3 Shots", "4 Shots", "5 Shots"], a: 2 },
-      { q: "How many decaf pods are used for a Small Decaf Cappuccino?", o: ["1 Pod", "2 Pods", "3 Pods", "Half Pod"], a: 0 },
-      { q: "What is the extraction time for a Small Standard Cappuccino?", o: ["15 Seconds", "20 Seconds", "35 Seconds", "2x20 Seconds"], a: 1 },
-      { q: "What is the extraction time for a Medium Standard Cappuccino?", o: ["20 Seconds", "35 Seconds", "15 Seconds", "2x20 Seconds"], a: 1 },
-      { q: "What is the extra shot specification for a Small Cappuccino?", o: ["1 x Single Ristretto", "1 x 30ml / 30g", "1 x 10ml / 10g", "1 x 20ml / 20g"], a: 1 },
-      { q: "What is the extra shot specification for a Large Cappuccino?", o: ["1 x 30ml / 30g", "2 x 30ml / 30g", "1 x Single Ristretto", "1 x 10ml / 10g"], a: 0 },
-      { q: "What is the target foam depth ratio for a standard Costa Cappuccino?", o: ["1cm light foam", "1/3 Espresso, 1/3 Steamed Milk, 1/3 Dense Microfoam", "100% foam with no liquid milk", "Flat liquid milk with zero foam"], a: 1 },
-      { q: "What finish is standard on top of a classic Costa Cappuccino unless declined?", o: ["Cinnamon powder", "Chocolate dusting (cocoa powder)", "Caramel drizzle", "Nutmeg powder"], a: 1 },
-      { q: "What is the correct milk temperature range when steaming milk for Cappuccino?", o: ["50°C - 55°C", "60°C - 65°C (max 70°C)", "80°C - 85°C", "35°C - 40°C"], a: 1 },
-      { q: "What happens if milk is steamed above 70°C during Cappuccino preparation?", o: ["The milk sweetens significantly", "Proteins denature, scalding the milk and destroying foam texture", "Foam becomes thicker and silkier", "No change occurs"], a: 1 },
-      { q: "How many decaf pods are used for a Large Decaf Cappuccino?", o: ["1 Pod", "2 Pods", "3 Pods", "4 Pods"], a: 1 },
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      checkAuth();
+      renderMiniLeaderboard();
+      renderLeaderboard();
+      document.getElementById('bankTitle').textContent = `${MASTER_QUESTIONS.length} Question Master Bank`;
+      document.getElementById('statPoolSize').textContent = `${MASTER_QUESTIONS.length} Items`;
+    });
 
-      // Section 4: Latte & Glassware/Cup Specifications (86-115)
-      { q: "What is the Extra Shot rule for Latte across all sizes?", o: ["1 x Single Ristretto", "1 x 10ml / 10g", "1 x 30ml / 30g For All Sizes", "1 x 60ml / 60g For All Sizes"], a: 2 },
-      { q: "What are the specifications for a Small Takeaway Standard Latte?", o: ["1 Shot, 30mls / 30g – 20 Seconds", "2 Shots, 60mls / 60g – 20 Seconds", "2 Shots, 40mls / 40g – 15 Seconds", "3 Shots, 80mls / 80g – 35 Seconds"], a: 1 },
-      { q: "What are the specifications for a Small Takeaway Decaf Latte?", o: ["1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "2 Pods, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 2 Shots, 40mls / 40g – 15 Seconds"], a: 1 },
-      { q: "What are the specifications for a Small Drink In Standard Latte?", o: ["1 Shot, 30mls / 30g – 20 Seconds", "2 Shots, 60mls / 60g – 20 Seconds", "1 Shot, 20mls / 20g – 15 Seconds", "2 Shots, 30mls / 30g – 20 Seconds"], a: 0 },
-      { q: "What are the specifications for a Small Drink In Decaf Latte?", o: ["1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 1 Shot, 30mls / 30g – 20 Seconds", "2 Pods, 1 Shot, 30mls / 30g – 20 Seconds", "1 Pod, 1 Shot, 20mls / 20g – 15 Seconds"], a: 1 },
-      { q: "What are the specifications for a Medium Standard Latte?", o: ["2 Shots, 60mls / 60g – 20 Seconds", "3 Shots, 80mls / 80g – 35 Seconds", "2 Shots, 30mls / 30g – 20 Seconds", "3 Shots, 60mls / 60g – 20 Seconds"], a: 0 },
-      { q: "What are the specifications for a Medium Decaf Latte?", o: ["2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "1 Pod, 2 Shots, 60mls / 60g – 20 Seconds", "2 Pods, 2 Shots, 60mls / 60g – 20 Seconds", "1 Pod, 3 Shots, 80mls / 80g – 35 Seconds"], a: 1 },
-      { q: "What are the specifications for a Large Standard Latte?", o: ["4 Shots, 120mls / 120g – 2x20 Seconds", "3 Shots, 80mls / 80g – 35 Seconds", "3 Shots, 90mls / 90g – 35 Seconds", "2 Shots, 60mls / 60g – 20 Seconds"], a: 1 },
-      { q: "What are the specifications for a Large Decaf Latte?", o: ["2 Pods, 3 Shots, 90mls / 90g – 2x20 Seconds", "1 Pod, 3 Shots, 80mls / 80g – 35 Seconds", "2 Pods, 4 Shots, 120mls / 120g – 2x20 Seconds", "2 Pods, 3 Shots, 80mls / 80g – 2x20 Seconds"], a: 0 },
-      { q: "What is the main difference in shots and volume between Small Takeaway and Small Drink In Standard Lattes?", o: ["Small Takeaway is 1 Shot (30ml); Small Drink In is 2 Shots (60ml)", "Small Takeaway is 2 Shots (60ml); Small Drink In is 1 Shot (30ml)", "Both are 2 Shots (60ml)", "Both are 1 Shot (30ml)"], a: 1 },
-      { q: "How many shots are in a Medium Standard Latte?", o: ["1 Shot", "2 Shots", "3 Shots", "4 Shots"], a: 1 },
-      { q: "How many shots are in a Large Standard Latte?", o: ["2 Shots", "3 Shots", "4 Shots", "5 Shots"], a: 1 },
-      { q: "How many decaf pods are used for a Medium Decaf Latte?", o: ["1 Pod", "2 Pods", "3 Pods", "Half Pod"], a: 0 },
-      { q: "How many decaf pods are used for a Large Decaf Latte?", o: ["1 Pod", "2 Pods",
+    function showView(viewId) {
+      ['loginView', 'dashboardView', 'quizView', 'resultView'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(viewId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    function checkAuth() {
+      const stored = localStorage.getItem('costa_barista_user');
+      if (stored) {
+        currentUser = JSON.parse(stored);
+        document.getElementById('displayName').textContent = currentUser.name;
+        document.getElementById('welcomeUser').textContent = currentUser.name;
+        document.getElementById('userBadge').classList.remove('hidden');
+        updateUserStats();
+        showView('dashboardView');
+      } else {
+        document.getElementById('userBadge').classList.add('hidden');
+        showView('loginView');
+      }
+    }
+
+    function handleLogin() {
+      const name = document.getElementById('usernameInput').value.trim();
+      const store = document.getElementById('storeInput').value.trim();
+
+      if (!name || !store) {
+        alert('Please fill in both your Full Name and Store / Employee ID.');
+        return;
+      }
+
+      currentUser = {
+        name,
+        store,
+        id: name.toLowerCase().replace(/\s+/g, '_') + '_' + store.toLowerCase()
+      };
+
+      localStorage.setItem('costa_barista_user', JSON.stringify(currentUser));
+      document.getElementById('displayName').textContent = currentUser.name;
+      document.getElementById('welcomeUser').textContent = currentUser.name;
+      document.getElementById('userBadge').classList.remove('hidden');
+
+      updateUserStats();
+      showView('dashboardView');
+    }
+
+    function logout() {
+      localStorage.removeItem('costa_barista_user');
+      currentUser = null;
+      document.getElementById('userBadge').classList.add('hidden');
+      showView('loginView');
+    }
+
+    function updateUserStats() {
+      if (!currentUser) return;
+      const history = JSON.parse(localStorage.getItem('costa_quiz_history') || '[]');
+      const userHistory = history.filter(h => h.userId === currentUser.id);
+
+      document.getElementById('statQuizzes').textContent = userHistory.length;
+      const best = userHistory.reduce((max, h) => h.score > max ? h.score : max, 0);
+      document.getElementById('statHighScore').textContent = `${best} / 20`;
+    }
+
+    function startNewQuiz() {
+      const shuffled = [...MASTER_QUESTIONS].sort(() => 0.5 - Math.random());
+      activeQuizQuestions = shuffled.slice(0, 20);
+      userAnswers = {};
+      currentQuestionIndex = 0;
+      showView('quizView');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const qData = activeQuizQuestions[currentQuestionIndex];
+      const total = activeQuizQuestions.length;
+
+      document.getElementById('questionTracker').textContent = `Question ${currentQuestionIndex + 1} of ${total}`;
+      document.getElementById('progressBar').style.width = `${((currentQuestionIndex + 1) / total) * 100}%`;
+      document.getElementById('questionText').textContent = qData.q;
+
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+
+      isAnsweredCurrent = userAnswers[currentQuestionIndex] !== undefined;
+      const chosenOption = userAnswers[currentQuestionIndex];
+
+      qData.o.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        
+        let btnClasses = 'w-full text-left p-4 rounded-xl border transition flex items-center justify-between font-medium ';
+        
+        if (isAnsweredCurrent) {
+          if (optIdx === qData.a) {
+            btnClasses += 'bg-emerald-100 border-emerald-500 text-emerald-900 font-bold shadow-sm';
+          } else if (optIdx === chosenOption) {
+            btnClasses += 'bg-red-100 border-red-500 text-red-900 font-bold shadow-sm';
+          } else {
+            btnClasses += 'bg-slate-50 border-slate-200 text-slate-400 opacity-60';
+          }
+        } else {
+          btnClasses += 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700';
+        }
+
+        btn.className = btnClasses;
+        if (!isAnsweredCurrent) {
+          btn.onclick = () => selectOption(optIdx);
+        }
+
+        let badgeHtml = '';
+        if (isAnsweredCurrent) {
+          if (optIdx === qData.a) {
+            badgeHtml = '<span class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold">Correct Answer</span>';
+          } else if (optIdx === chosenOption) {
+            badgeHtml = '<span class="bg-red-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold">Your Choice</span>';
+          }
+        }
+
+        btn.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-lg text-xs flex items-center justify-center font-bold bg-white border border-slate-300 text-slate-600">${String.fromCharCode(65 + optIdx)}</span>
+            <span>${optText}</span>
+          </div>
+          ${badgeHtml}
+        `;
+        container.appendChild(btn);
+      });
+
+      document.getElementById('prevBtn').style.visibility = currentQuestionIndex === 0 ? 'hidden' : 'visible';
+      if (currentQuestionIndex === total - 1) {
+        document.getElementById('nextBtn').classList.add('hidden');
+        document.getElementById('submitBtn').classList.remove('hidden');
+      } else {
+        document.getElementById('nextBtn').classList.remove('hidden');
+        document.getElementById('submitBtn').classList.add('hidden');
+      }
+
+      lucide.createIcons();
+    }
+
+    function selectOption(optIndex) {
+      if (userAnswers[currentQuestionIndex] !== undefined) return;
+      userAnswers[currentQuestionIndex] = optIndex;
+      renderQuestion();
+    }
+
+    function navigateQuestion(direction) {
+      currentQuestionIndex += direction;
+      renderQuestion();
+    }
+
+    function confirmSubmitQuiz() {
+      let score = 0;
+      activeQuizQuestions.forEach((qData, idx) => {
+        if (userAnswers[idx] === qData.a) {
+          score++;
+        }
+      });
+
+      const history = JSON.parse(localStorage.getItem('costa_quiz_history') || '[]');
+      history.push({
+        userId: currentUser.id,
+        name: currentUser.name,
+        store: currentUser.store,
+        score: score,
+        total: 20,
+        percentage: Math.round((score / 20) * 100),
+        date: new Date().toLocaleDateString('en-GB')
+      });
+      localStorage.setItem('costa_quiz_history', JSON.stringify(history));
+
+      renderResults(score);
+      renderLeaderboard();
+      renderMiniLeaderboard();
+      updateUserStats();
+    }
+
+    function renderResults(score) {
+      showView('resultView');
+      const percentage = Math.round((score / 20) * 100);
+
+      const scoreBadge = document.getElementById('scoreBadge');
+      if (percentage >= 85) {
+        scoreBadge.className = 'w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-extrabold bg-emerald-100 text-emerald-700 shadow-lg';
+        scoreBadge.innerHTML = '🏆';
+        document.getElementById('resultTitle').textContent = 'Certification Passed!';
+        document.getElementById('resultSubtitle').textContent = 'Excellent work! You demonstrated strong mastery of Costa Barista Standards.';
+      } else {
+        scoreBadge.className = 'w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-extrabold bg-amber-100 text-amber-700 shadow-lg';
+        scoreBadge.innerHTML = '📚';
+        document.getElementById('resultTitle').textContent = 'Review & Retake Recommended';
+        document.getElementById('resultSubtitle').textContent = 'Review your incorrect answers below to prepare for your next attempt.';
+      }
+
+      document.getElementById('finalScoreText').textContent = `${score} / 20`;
+      document.getElementById('finalPercentageText').textContent = `${percentage}%`;
+
+      const reviewContainer = document.getElementById('reviewContainer');
+      reviewContainer.innerHTML = '';
+
+      activeQuizQuestions.forEach((qData, idx) => {
+        const userChoice = userAnswers[idx];
+        const isCorrect = userChoice === qData.a;
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/60 border-emerald-200' : 'bg-red-50/70 border-red-300'}`;
+
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="mt-0.5 p-1 rounded-full ${isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}">
+              <i data-lucide="${isCorrect ? 'check' : 'x'}" class="w-4 h-4"></i>
+            </div>
+            <div class="flex-1">
+              <span class="text-xs font-bold uppercase tracking-wide ${isCorrect ? 'text-emerald-700' : 'text-red-700'}">
+                Question ${idx + 1} — ${isCorrect ? 'CORRECT' : 'INCORRECT'}
+              </span>
+              <p class="font-bold text-slate-900 text-sm mt-1">${qData.q}</p>
+              <div class="mt-3 space-y-2 text-xs">
+                <div class="p-2 rounded-lg ${isCorrect ? 'bg-emerald-100/60 text-emerald-900' : 'bg-red-100 text-red-900'} flex items-center justify-between">
+                  <span><strong>Your Choice:</strong> ${userChoice !== undefined ? qData.o[userChoice] : 'Not Answered'}</span>
+                </div>
+                ${!isCorrect ? `
+                  <div class="p-2 rounded-lg bg-emerald-100/80 text-emerald-900 flex items-center justify-between border border-emerald-300">
+                    <span><strong>Correct Standard:</strong> ${qData.o[qData.a]}</span>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        reviewContainer.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    function getTopScores() {
+      const history = JSON.parse(localStorage.getItem('costa_quiz_history') || '[]');
+      const userBests = {};
+      history.forEach(item => {
+        if (!userBests[item.userId] || item.score > userBests[item.userId].score) {
+          userBests[item.userId] = item;
+        }
+      });
+      return Object.values(userBests).sort((a, b) => b.score - a.score);
+    }
+
+    function renderLeaderboard() {
+      const topScores = getTopScores();
+      const tbody = document.getElementById('fullLeaderboardTable');
+      tbody.innerHTML = '';
+
+      if (topScores.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 italic">No quiz scores logged yet. Be the first!</td></tr>`;
+        return;
+      }
+
+      topScores.forEach((item, rank) => {
+        const tr = document.createElement('tr');
+        tr.className = rank === 0 ? 'bg-amber-50/40 font-medium' : '';
+        tr.innerHTML = `
+          <td class="py-3 px-2 font-bold ${rank === 0 ? 'text-costa-gold' : 'text-slate-500'}">#${rank + 1}</td>
+          <td class="py-3 px-2 font-semibold text-slate-800">${item.name}</td>
+          <td class="py-3 px-2 text-slate-500">${item.store}</td>
+          <td class="py-3 px-2 text-right font-bold text-costa-burgundy">${item.score} / 20 (${item.percentage}%)</td>
+          <td class="py-3 px-2 text-right text-xs text-slate-400">${item.date}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderMiniLeaderboard() {
+      const topScores = getTopScores().slice(0, 3);
+      const container = document.getElementById('miniLeaderboard');
+      container.innerHTML = '';
+
+      if (topScores.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-xs italic">No scores recorded yet.</p>`;
+        return;
+      }
+
+      topScores.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100';
+        div.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <span class="w-5 h-5 bg-costa-burgundy text-white text-xs font-bold rounded-full flex items-center justify-center">${index + 1}</span>
+            <span class="font-semibold text-slate-700">${item.name} <span class="text-xs text-slate-400">(${item.store})</span></span>
+          </div>
+          <span class="font-extrabold text-costa-burgundy">${item.score}/20</span>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
