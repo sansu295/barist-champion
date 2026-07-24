@@ -239,11 +239,6 @@
             </h3>
             <p class="text-xs text-slate-400 mt-0.5">Filter questions below to focus on your incorrect answers.</p>
           </div>
-          <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold">
-            <button id="filterAllBtn" onclick="setReviewFilter('all')" class="px-3 py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition">All (20)</button>
-            <button id="filterWrongBtn" onclick="setReviewFilter('wrong')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition">Incorrect Only</button>
-            <button id="filterCorrectBtn" onclick="setReviewFilter('correct')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition">Correct Only</button>
-          </div>
         </div>
         <div id="reviewContainer" class="space-y-4"></div>
       </div>
@@ -255,7 +250,7 @@
     <p>© 2026 Costa Coffee UAE — Official Brand Excellence & Calibration Assessment Tool</p>
   </footer>
 
-  <!-- Firebase & App Script Integration -->
+  <!-- Firebase & App Script Integration (Module to expose global functions) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -765,7 +760,6 @@
           percentage: Math.round((score / 20) * 100),
           timestamp: serverTimestamp()
         });
-        console.log("Score successfully saved to Firebase!");
       } catch (error) {
         console.error("Error adding document to Firebase: ", error);
       }
@@ -910,6 +904,15 @@
         container.innerHTML = `<p class="text-slate-400 text-xs italic">Error loading preview.</p>`;
       }
     }
+
+    // Expose functions globally to prevent HTML onclick errors inside modules
+    window.handleLogin = handleLogin;
+    window.logout = logout;
+    window.startNewQuiz = startNewQuiz;
+    window.navigateQuestion = navigateQuestion;
+    window.confirmSubmitQuiz = confirmSubmitQuiz;
+    window.renderLeaderboard = renderLeaderboard;
+    window.showView = showView;
   </script>
 </body>
 </html>
