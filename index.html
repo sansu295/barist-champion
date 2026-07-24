@@ -159,7 +159,7 @@
                 <th class="py-3 px-2">Rank</th>
                 <th class="py-3 px-2">Barista</th>
                 <th class="py-3 px-2">Store ID</th>
-                <th class="py-3 px-2 text-right">Best Score</th>
+                <th class="py-3 px-2 text-right">Score</th>
                 <th class="py-3 px-2 text-right">Date</th>
               </tr>
             </thead>
@@ -255,8 +255,25 @@
     <p>© 2026 Costa Coffee UAE — Official Brand Excellence & Calibration Assessment Tool</p>
   </footer>
 
-  <script>
-    // FULL MASTER QUESTION BANK (OVER 250 QUESTIONS EXTRACTED FROM YOUR JSON DATA)
+  <!-- Firebase & App Script Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEKBup3-ICW6ecQ5mt6Yi5l_NiDcqgiwc",
+      authDomain: "baristaquiz.firebaseapp.com",
+      projectId: "baristaquiz",
+      storageBucket: "baristaquiz.firebasestorage.app",
+      messagingSenderId: "739023368026",
+      appId: "1:739023368026:web:5b628c90617bf262748d63",
+      measurementId: "G-B0CQWPNYPX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // FULL MASTER QUESTION BANK
     const MASTER_QUESTIONS = [
       { q: "How long is the shelf life of an opened bag of coffee (day dot)?", o: ["24 Hours", "48 Hours", "72 Hours", "1 Week"], a: 1 },
       { q: "What is the maximum time coffee should sit in the hopper before being managed for waste (off peak/end of day)?", o: ["1 Hour", "2 Hours", "4 Hours", "8 Hours"], a: 2 },
@@ -609,6 +626,8 @@
 
       updateUserStats();
       showView('dashboardView');
+      renderLeaderboard();
+      renderMiniLeaderboard();
     }
 
     function logout() {
@@ -716,7 +735,7 @@
       renderQuestion();
     }
 
-    function confirmSubmitQuiz() {
+    async function confirmSubmitQuiz() {
       let score = 0;
       activeQuizQuestions.forEach((qData, idx) => {
         if (userAnswers[idx] === qData.a) {
@@ -724,6 +743,7 @@
         }
       });
 
+      // Local storage tracker for personal stats
       const history = JSON.parse(localStorage.getItem('costa_quiz_history') || '[]');
       history.push({
         userId: currentUser.id,
@@ -735,6 +755,20 @@
         date: new Date().toLocaleDateString('en-GB')
       });
       localStorage.setItem('costa_quiz_history', JSON.stringify(history));
+
+      // Save score to global Firebase Firestore leaderboard
+      try {
+        await addDoc(collection(db, "leaderboard"), {
+          name: currentUser.name,
+          store: currentUser.store,
+          score: Number(score),
+          percentage: Math.round((score / 20) * 100),
+          timestamp: serverTimestamp()
+        });
+        console.log("Score successfully saved to Firebase!");
+      } catch (error) {
+        console.error("Error adding document to Firebase: ", error);
+      }
 
       renderResults(score);
       renderLeaderboard();
@@ -801,63 +835,80 @@
       lucide.createIcons();
     }
 
-    function getTopScores() {
-      const history = JSON.parse(localStorage.getItem('costa_quiz_history') || '[]');
-      const userBests = {};
-      history.forEach(item => {
-        if (!userBests[item.userId] || item.score > userBests[item.userId].score) {
-          userBests[item.userId] = item;
-        }
-      });
-      return Object.values(userBests).sort((a, b) => b.score - a.score);
-    }
-
-    function renderLeaderboard() {
-      const topScores = getTopScores();
+    // Function to fetch and render the live global leaderboard
+    async function renderLeaderboard() {
       const tbody = document.getElementById('fullLeaderboardTable');
-      tbody.innerHTML = '';
+      if (!tbody) return;
+      
+      tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 italic">Loading live global data...</td></tr>`;
 
-      if (topScores.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 italic">No quiz scores logged yet. Be the first!</td></tr>`;
-        return;
+      try {
+        const q = query(collection(db, "leaderboard"), orderBy("score", "desc"));
+        const snapshot = await getDocs(q);
+        
+        let rows = "";
+        let index = 0;
+
+        snapshot.forEach((docSnap) => {
+          index++;
+          let data = docSnap.data();
+          let dateStr = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleDateString('en-GB') : 'Recent';
+          
+          rows += `
+            <tr class="hover:bg-slate-50 border-b border-slate-100 ${index === 1 ? 'bg-amber-50/40 font-medium' : ''}">
+              <td class="py-3 px-2 font-bold ${index === 1 ? 'text-costa-gold' : 'text-slate-500'}">#${index}</td>
+              <td class="py-3 px-2 font-semibold text-slate-800">${data.name || 'Anonymous'}</td>
+              <td class="py-3 px-2 text-slate-500">${data.store || 'N/A'}</td>
+              <td class="py-3 px-2 text-right font-bold text-costa-burgundy">${data.score} / 20 (${data.percentage || Math.round((data.score/20)*100)}%)</td>
+              <td class="py-3 px-2 text-right text-xs text-slate-400">${dateStr}</td>
+            </tr>
+          `;
+        });
+
+        tbody.innerHTML = rows || `<tr><td colspan="5" class="py-4 text-center text-slate-400 italic">No global scores logged yet. Be the first!</td></tr>`;
+      } catch (error) {
+        console.error("Error fetching leaderboard: ", error);
+        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-red-500 italic">Failed to load live leaderboard from Firebase.</td></tr>`;
       }
-
-      topScores.forEach((item, rank) => {
-        const tr = document.createElement('tr');
-        tr.className = rank === 0 ? 'bg-amber-50/40 font-medium' : '';
-        tr.innerHTML = `
-          <td class="py-3 px-2 font-bold ${rank === 0 ? 'text-costa-gold' : 'text-slate-500'}">#${rank + 1}</td>
-          <td class="py-3 px-2 font-semibold text-slate-800">${item.name}</td>
-          <td class="py-3 px-2 text-slate-500">${item.store}</td>
-          <td class="py-3 px-2 text-right font-bold text-costa-burgundy">${item.score} / 20 (${item.percentage}%)</td>
-          <td class="py-3 px-2 text-right text-xs text-slate-400">${item.date}</td>
-        `;
-        tbody.appendChild(tr);
-      });
     }
 
-    function renderMiniLeaderboard() {
-      const topScores = getTopScores().slice(0, 3);
+    // Function to render top 3 users on login view preview
+    async function renderMiniLeaderboard() {
       const container = document.getElementById('miniLeaderboard');
-      container.innerHTML = '';
+      if (!container) return;
+      container.innerHTML = `<p class="text-slate-400 text-xs italic">Loading...</p>`;
 
-      if (topScores.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 text-xs italic">No scores recorded yet.</p>`;
-        return;
+      try {
+        const q = query(collection(db, "leaderboard"), orderBy("score", "desc"));
+        const snapshot = await getDocs(q);
+        
+        let items = [];
+        snapshot.forEach((docSnap) => {
+          items.push(docSnap.data());
+        });
+
+        const top3 = items.slice(0, 3);
+        if (top3.length === 0) {
+          container.innerHTML = `<p class="text-slate-400 text-xs italic">No scores recorded yet.</p>`;
+          return;
+        }
+
+        let html = '';
+        top3.forEach((item, index) => {
+          html += `
+            <div class="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <div class="flex items-center space-x-2">
+                <span class="w-5 h-5 bg-costa-burgundy text-white text-xs font-bold rounded-full flex items-center justify-center">${index + 1}</span>
+                <span class="font-semibold text-slate-700">${item.name} <span class="text-xs text-slate-400">(${item.store})</span></span>
+              </div>
+              <span class="font-extrabold text-costa-burgundy">${item.score}/20</span>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch (error) {
+        container.innerHTML = `<p class="text-slate-400 text-xs italic">Error loading preview.</p>`;
       }
-
-      topScores.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100';
-        div.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <span class="w-5 h-5 bg-costa-burgundy text-white text-xs font-bold rounded-full flex items-center justify-center">${index + 1}</span>
-            <span class="font-semibold text-slate-700">${item.name} <span class="text-xs text-slate-400">(${item.store})</span></span>
-          </div>
-          <span class="font-extrabold text-costa-burgundy">${item.score}/20</span>
-        `;
-        container.appendChild(div);
-      });
     }
   </script>
 </body>
